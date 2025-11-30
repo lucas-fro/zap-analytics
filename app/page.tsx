@@ -7,20 +7,31 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col overflow-x-hidden bg-background">
       <Header/>  
-      <section className="h-dvh flex p-10 items-center gap-10 w-full">
-        <div className="flex flex-col gap-8 max-w-[50%] ">
-          <h1 className="text-foreground text-6xl font-bold">Descubra tudo sobre suas <span className="text-primary">conversas do WhatsApp</span></h1>
-          <p className="text-border text-2xl">Transforme suas conversas em dados fascinantes. Veja quem mais fala, horarios mais ativos, emojis favoritos e muito mais.</p>
-          <div className="flex gap-10">
-            <Tags icon={CircleCheck} text="sem cadastro"/>
-            <Tags icon={Shield} text="Processamento local"/>
-            <Tags icon={Zap} text="Resultados instataneos"/>
+      <section className="min-h-dvh flex flex-wrap gap-5 p-10 items-center w-full">
+
+        <div className="flex-1 grid md:gap-10 gap-5 text-center md:text-left">
+          <h1 className="mt-5 text-foreground md:text-6xl text-5xl font-bold">
+            Descubra tudo sobre suas <span className="text-primary">conversas do WhatsApp</span>
+          </h1>
+
+          <p className="text-border md:text-2xl text-lg">
+            Transforme suas conversas em dados fascinantes. Veja quem mais fala, horários mais ativos,
+            emojis favoritos e muito mais.
+          </p>
+
+          <div className="flex flex-wrap justify-center lg:justify-start gap-5">
+            <Tags icon={CircleCheck} text="sem cadastro" />
+            <Tags icon={Shield} text="Processamento local" />
+            <Tags icon={Zap} text="Resultados instantâneos" />
           </div>
         </div>
-        <div className="w-[50%] flex justify-center items-center">
-          <FileUploader redirectTo="/dashboard"/>
+
+        <div className="flex-1">
+          <FileUploader redirectTo="/dashboard" />
         </div>
+
       </section>
+
     </div>
     
   );

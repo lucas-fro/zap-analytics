@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { UploadCloud, FileText, Archive } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { parseFile } from "../utils/parse";  // <-- importado!
+import { parseFile } from "../utils/parse";
 
 export default function FileUploader({ redirectTo }: { redirectTo: string }) {
   const [file, setFile] = useState<File | null>(null);
@@ -26,9 +26,9 @@ export default function FileUploader({ redirectTo }: { redirectTo: string }) {
     setFile(f);
     setLoading(true);
 
-    await parseFile(f);   // <-- agora chamando direto, não vem mais como prop
+    await parseFile(f); 
 
-    router.push(redirectTo);
+    //router.push(redirectTo);
   };
 
   const onDrop = (e: React.DragEvent<HTMLDivElement>) => {
