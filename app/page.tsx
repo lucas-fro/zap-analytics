@@ -1,6 +1,7 @@
 import { Tags } from "../components/tags";
 import { Header } from "../components/header";
 import { CircleCheck, Shield, Zap } from "lucide-react";
+import FileUploader from "../components/fileUploader";
 
 export default function Home() {
   return (
@@ -16,9 +17,8 @@ export default function Home() {
             <Tags icon={Zap} text="Resultados instataneos"/>
           </div>
         </div>
-        <div className="w-full flex justify-center items-center">
-          <div className="bg-red-600 size-80  p-5">
-          </div>
+        <div className="w-[50%] flex justify-center items-center">
+          <FileUploader redirectTo="/dashboard"/>
         </div>
       </section>
     </div>
