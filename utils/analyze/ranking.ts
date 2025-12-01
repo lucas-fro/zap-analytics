@@ -25,7 +25,8 @@ export function getEmojiCountList(mensagens: Mensagem[]) {
   // Converte e ordena → mais usados primeiro
   const emojiList = Object.entries(mapa)
     .sort((a, b) => b[1] - a[1])
-    .map(([emoji, quantidade]) => ({ emoji, quantidade }));
+    .map(([emoji, quantidade]) => ({ emoji, quantidade }))
+    .slice(0, 20);
 
   return emojiList;
 }
@@ -43,7 +44,9 @@ export function getTop20Palavras(mensagens: Mensagem[]) {
     "la","lá","isso","isso","esse","essa","eu","você","ele",
     "ela","eles","elas","nosso","nossa","meu","minha","teu",
     "tua","seu","sua","já","mas","pra","pro","tá","to","tô",
-    "um","uma","uns","umas","depois","quando","onde","como"
+    "um","uma","uns","umas","depois","quando","onde","como",
+    "vcs","vc","pq","ta","só","me", "mídia", "oculta", "https",
+    "mensagem"
   ]);
 
   const palavraCount: Record<string, number> = {};
