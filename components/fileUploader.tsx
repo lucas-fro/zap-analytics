@@ -60,6 +60,18 @@ export default function FileUploader({ redirectTo }: { redirectTo: string }) {
       return <Archive className="w-6 h-6 text-yellow-400" />;
   };
 
+  const formatFileSize = (bytes: number, decimals = 2): string => {
+    if (bytes === 0) return '0 Bytes';
+
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+  };
+
   return (
     <div className="max-w-xl mx-auto border rounded-xl p-6 bg-[#1f1f23] text-[#fafafa]">
       {!file ? (
@@ -90,7 +102,12 @@ export default function FileUploader({ redirectTo }: { redirectTo: string }) {
       ) : (
         <div className="flex flex-col items-center gap-3 py-4">
           {getFileIcon()}
-          <p className="font-medium">{file.name}</p>
+          <p className="font-medium text-center">{file.name}</p>
+          {file.size > 0 && (
+            <p className="text-sm text-gray-400">
+              {formatFileSize(file.size)}
+            </p>
+          )}
           <p className="text-sm text-gray-400">
             {loading ? "Processando arquivo..." : ""}
           </p>

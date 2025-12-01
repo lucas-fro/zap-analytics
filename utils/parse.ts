@@ -1,5 +1,5 @@
 import JSZip from 'jszip'; 
-import { ExtractMessages } from './extractMessages';
+import { extractMessages } from './extractMessages';
 
 export async function parseFile(file: File): Promise<string> {
   console.log("Processando arquivo:", file.name);
@@ -22,8 +22,7 @@ export async function parseFile(file: File): Promise<string> {
         
         // Extrair o conteúdo do arquivo como texto (string)
         const text = await zip.files[txtFileEntry].async("string");
-        console.log(text);
-        const menssagens = await ExtractMessages(text);
+        const menssagens = await extractMessages(text);
         console.log(menssagens);
         return text;
       } else {
@@ -41,8 +40,7 @@ export async function parseFile(file: File): Promise<string> {
     
     // Exemplo de leitura de texto
     const text = await file.text();
-    console.log(text);
-    const menssagens = await ExtractMessages(text);
+    const menssagens = await extractMessages(text);
     console.log(menssagens);
     return text;
 
