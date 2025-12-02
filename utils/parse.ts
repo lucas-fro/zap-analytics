@@ -1,7 +1,7 @@
 import JSZip from 'jszip'; 
 import { extractMessages } from './extractMessages';
 
-export async function parseFile(file: File): Promise<string> {
+export async function parseFile(file: File): Promise<string | { topDatas: any; rawDatas: any; metrics: any; dataPerPerson: Record<string, any>; ranking: any; }> {
   console.log("Processando arquivo:", file.name);
 
   // 1. Verificar se é um arquivo ZIP
@@ -23,8 +23,7 @@ export async function parseFile(file: File): Promise<string> {
         // Extrair o conteúdo do arquivo como texto (string)
         const text = await zip.files[txtFileEntry].async("string");
         const menssagens = await extractMessages(text);
-        console.log(menssagens);
-        return text;
+        return menssagens; // Adjusted return type to allow returning the object
       } else {
         throw new Error("Nenhum arquivo .txt encontrado dentro do ZIP.");
       }
@@ -41,8 +40,7 @@ export async function parseFile(file: File): Promise<string> {
     // Exemplo de leitura de texto
     const text = await file.text();
     const menssagens = await extractMessages(text);
-    console.log(menssagens);
-    return text;
+    return menssagens;
 
   // 3. Se não for nem ZIP nem TXT, disparar um erro
   } else {

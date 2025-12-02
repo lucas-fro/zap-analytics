@@ -7,7 +7,13 @@ type Mensagem = {
   mensagem: string;
 };
 
-export async function extractMessages(chatText: string): Promise<Mensagem[]> {
+export async function extractMessages(chatText: string): Promise<{
+  topDatas: any;
+  rawDatas: any;
+  metrics: any;
+  dataPerPerson: Record<string, any>;
+  ranking: any;
+}> {
   // A regex identifica o início de uma nova linha de mensagem válida:
   // ^: Início da linha
   // (\d{2}/\d{2}/\d{4}): Captura a data (DD/MM/AAAA)
@@ -82,6 +88,8 @@ export async function extractMessages(chatText: string): Promise<Mensagem[]> {
 
     resultados.push(mensagem);
   }
-  console.log(analyzeAll(resultados));
-  return resultados;
+    
+  const newResultado = analyzeAll(resultados);
+
+  return newResultado;
 }

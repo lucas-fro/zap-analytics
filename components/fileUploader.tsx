@@ -4,12 +4,16 @@ import React, { useState } from "react";
 import { UploadCloud, FileText, Archive } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { parseFile } from "../utils/parse";
+import { useDataAnalytics } from "../app/store/useDatasAnalytycs";
 
 export default function FileUploader({ redirectTo }: { redirectTo: string }) {
   const [file, setFile] = useState<File | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
+  const setData = useDataAnalytics((state: any) => state.setData);
+  const setTitle = useDataAnalytics((state: any) => state.setTitleMensagens);
   const router = useRouter();
 
   const isValidFile = (f: File) =>
@@ -19,17 +23,38 @@ export default function FileUploader({ redirectTo }: { redirectTo: string }) {
     if (!f) return;
 
     if (!isValidFile(f)) {
-      alert("Apenas arquivos .zip ou .txt são permitidos!");
+      setError("Apenas arquivos .zip ou .txt são permitidos!");
       return;
     }
 
     setFile(f);
     setLoading(true);
+    setError(null);
 
-    await parseFile(f); 
-
-    //router.push(redirectTo);
+    try {
+      const analytics = await parseFile(f);
+      setData(analytics);
+      setTitle(extractConversationName(f.name));
+      router.push(redirectTo);
+    } catch (err) {
+      console.error("Erro ao processar arquivo:", err);
+      setError(err instanceof Error ? err.message : "Erro ao processar arquivo");
+      setLoading(false);
+      setFile(null);
+    }
   };
+
+  function extractConversationName(filename: string): string {
+  // Remove extensão (.txt)
+  const noExtension = filename.replace(/\.[^/.]+$/, "");
+
+  // Pega tudo depois de "com "
+  const match = noExtension.match(/com\s+(.*)$/i);
+
+  // Se achar, retorna o nome, senão retorna string vazia
+  return match ? match[1].trim() : "";
+  }
+
 
   const onDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -75,30 +100,38 @@ export default function FileUploader({ redirectTo }: { redirectTo: string }) {
   return (
     <div className="max-w-xl mx-auto border rounded-xl p-6 bg-[#1f1f23] text-[#fafafa]">
       {!file ? (
-        <div
-          className={`
-            border-2 border-dashed rounded-xl p-8 text-center transition cursor-pointer 
-            ${isDragging ? "border-green-400 bg-green-400/10" : "border-gray-600"}
-          `}
-          onDrop={onDrop}
-          onDragOver={onDragOver}
-          onDragLeave={onDragLeave}
-        >
-          <UploadCloud className="w-10 h-10 mx-auto text-green-400 mb-3" />
-          <p className="text-gray-300 mb-4">
-            Arraste um arquivo .zip ou .txt aqui
-          </p>
+        <>
+          <div
+            className={`
+              border-2 border-dashed rounded-xl p-8 text-center transition cursor-pointer 
+              ${isDragging ? "border-green-400 bg-green-400/10" : "border-gray-600"}
+            `}
+            onDrop={onDrop}
+            onDragOver={onDragOver}
+            onDragLeave={onDragLeave}
+          >
+            <UploadCloud className="w-10 h-10 mx-auto text-green-400 mb-3" />
+            <p className="text-gray-300 mb-4">
+              Arraste um arquivo .zip ou .txt aqui
+            </p>
 
-          <label className="inline-block px-4 py-2 bg-green-500 text-black font-medium rounded-md cursor-pointer hover:bg-green-400 transition">
-            Selecionar arquivo
-            <input
-              type="file"
-              accept=".zip,.txt"
-              onChange={onFileInputChange}
-              className="hidden"
-            />
-          </label>
-        </div>
+            <label className="inline-block px-4 py-2 bg-green-500 text-black font-medium rounded-md cursor-pointer hover:bg-green-400 transition">
+              Selecionar arquivo
+              <input
+                type="file"
+                accept=".zip,.txt"
+                onChange={onFileInputChange}
+                className="hidden"
+              />
+            </label>
+          </div>
+          
+          {error && (
+            <div className="mt-4 p-3 bg-red-500/10 border border-red-500 rounded-md">
+              <p className="text-red-400 text-sm">{error}</p>
+            </div>
+          )}
+        </>
       ) : (
         <div className="flex flex-col items-center gap-3 py-4">
           {getFileIcon()}
@@ -108,9 +141,12 @@ export default function FileUploader({ redirectTo }: { redirectTo: string }) {
               {formatFileSize(file.size)}
             </p>
           )}
-          <p className="text-sm text-gray-400">
-            {loading ? "Processando arquivo..." : ""}
-          </p>
+          {loading && (
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 border-2 border-green-400 border-t-transparent rounded-full animate-spin"></div>
+              <p className="text-sm text-gray-400">Processando arquivo...</p>
+            </div>
+          )}
         </div>
       )}
     </div>

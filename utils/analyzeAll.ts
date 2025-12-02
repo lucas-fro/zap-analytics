@@ -12,7 +12,7 @@ type Mensagem = {
 };
 
 export function analyzeAll(menssagens: Mensagem[]) {
-    return (console.log({
+    return ({
         topDatas: topDatas(menssagens),
         rawDatas: {
             countMensagens: totalMensagens(menssagens),
@@ -31,5 +31,5 @@ export function analyzeAll(menssagens: Mensagem[]) {
             topPalavras: getTop20Palavras(menssagens),
         }
         
-    }))
+    });
 }
