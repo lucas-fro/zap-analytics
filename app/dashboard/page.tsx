@@ -57,17 +57,17 @@ export default function Dashboard() {
 
       <GroupDatas title="Métricas Principais">
         <CardDados
-          icon={CalendarArrowUp}
-          text="Msgs/dia"
+          icon={MessageSquareDiff}
+          text="Mensagens/dia"
           data={data.metrics.mediaMensagensPorDia}
         />
         <CardDados
-          icon={Clock}
+          icon={CalendarArrowUp}
           text="Dia Mais Ativo"
           data={data.metrics.diaMaisAtivo}
         />
         <CardDados
-          icon={MessageSquareDiff}
+          icon={Clock}
           text="Hora Mais Ativa"
           data={data.metrics.horaMaisAtiva}
         />
