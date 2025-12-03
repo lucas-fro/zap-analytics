@@ -1,10 +1,4 @@
-export type Mensagem = {
-  data: string;      // ex: "30/11/2025"
-  hora: string;      // ex: "16:58"
-  nome: string;
-  mensagem: string;
-};
-
+import { Mensagem } from "../types/types";
 // --------------------------------------
 // 1) Média de mensagens por dia
 // --------------------------------------
@@ -15,7 +9,9 @@ export function mediaMensagensPorDia(mensagens: Mensagem[]) {
   const dias = new Set(mensagens.map(m => m.data));
 
   const totalDias = dias.size;
-  return mensagens.length / totalDias;
+  const media = mensagens.length / totalDias;
+
+  return Number(media.toFixed(1)); // apenas 1 casa decimal
 }
 
 // --------------------------------------

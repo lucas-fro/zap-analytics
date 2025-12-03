@@ -15,7 +15,7 @@ export function CardDados({icon : Icon, text, data}: typeDataCard) {
             </div>
             <div className="w-full min-w-0">
                 <span className="font-bold text-3xl">{data}</span>
-                <p className="w-full text-text-secondary md:text-2xl text-sm truncate">{text}</p>
+                <p className="w-full text-text-secondary md:text-lg text-sm truncate">{text}</p>
             </div>
         </Card>
     )

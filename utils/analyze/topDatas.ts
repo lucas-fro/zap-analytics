@@ -1,9 +1,4 @@
-type Mensagem = {
-  data: string;      // "30/11/2025"
-  hora: string;      // "16:58"
-  nome: string;
-  mensagem: string;
-};
+import { Mensagem } from "../types/types";
 
 export function topDatas(mensagens: Mensagem[]) {
   if (!mensagens.length) {

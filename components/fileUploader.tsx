@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { UploadCloud, FileText, Archive } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { parseFile } from "../utils/parse";
-import { useDataAnalytics } from "../app/store/useDatasAnalytycs";
+import { useDataAnalytics } from "../utils/store/useDatasAnalytycs";
 
 export default function FileUploader({ redirectTo }: { redirectTo: string }) {
   const [file, setFile] = useState<File | null>(null);
@@ -17,7 +17,9 @@ export default function FileUploader({ redirectTo }: { redirectTo: string }) {
   const router = useRouter();
 
   const isValidFile = (f: File) =>
-    f.type === "text/plain" || f.name.endsWith(".zip") || f.name.endsWith(".txt");
+    f.type === "text/plain" ||
+    f.name.endsWith(".zip") ||
+    f.name.endsWith(".txt");
 
   const handleFile = async (f: File | null) => {
     if (!f) return;
@@ -38,23 +40,24 @@ export default function FileUploader({ redirectTo }: { redirectTo: string }) {
       router.push(redirectTo);
     } catch (err) {
       console.error("Erro ao processar arquivo:", err);
-      setError(err instanceof Error ? err.message : "Erro ao processar arquivo");
+      setError(
+        err instanceof Error ? err.message : "Erro ao processar arquivo"
+      );
       setLoading(false);
       setFile(null);
     }
   };
 
   function extractConversationName(filename: string): string {
-  // Remove extensão (.txt)
-  const noExtension = filename.replace(/\.[^/.]+$/, "");
+    // Remove extensão (.txt)
+    const noExtension = filename.replace(/\.[^/.]+$/, "");
 
-  // Pega tudo depois de "com "
-  const match = noExtension.match(/com\s+(.*)$/i);
+    // Pega tudo depois de "com "
+    const match = noExtension.match(/com\s+(.*)$/i);
 
-  // Se achar, retorna o nome, senão retorna string vazia
-  return match ? match[1].trim() : "";
+    // Se achar, retorna o nome, senão retorna string vazia
+    return match ? match[1].trim() : "";
   }
-
 
   const onDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -86,15 +89,15 @@ export default function FileUploader({ redirectTo }: { redirectTo: string }) {
   };
 
   const formatFileSize = (bytes: number, decimals = 2): string => {
-    if (bytes === 0) return '0 Bytes';
+    if (bytes === 0) return "0 Bytes";
 
     const k = 1024;
     const dm = decimals < 0 ? 0 : decimals;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+    const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
 
     const i = Math.floor(Math.log(bytes) / Math.log(k));
 
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
   };
 
   return (
@@ -104,7 +107,11 @@ export default function FileUploader({ redirectTo }: { redirectTo: string }) {
           <div
             className={`
               border-2 border-dashed rounded-xl p-8 text-center transition cursor-pointer 
-              ${isDragging ? "border-green-400 bg-green-400/10" : "border-gray-600"}
+              ${
+                isDragging
+                  ? "border-green-400 bg-green-400/10"
+                  : "border-gray-600"
+              }
             `}
             onDrop={onDrop}
             onDragOver={onDragOver}
@@ -125,7 +132,7 @@ export default function FileUploader({ redirectTo }: { redirectTo: string }) {
               />
             </label>
           </div>
-          
+
           {error && (
             <div className="mt-4 p-3 bg-red-500/10 border border-red-500 rounded-md">
               <p className="text-red-400 text-sm">{error}</p>
@@ -137,9 +144,7 @@ export default function FileUploader({ redirectTo }: { redirectTo: string }) {
           {getFileIcon()}
           <p className="font-medium text-center">{file.name}</p>
           {file.size > 0 && (
-            <p className="text-sm text-gray-400">
-              {formatFileSize(file.size)}
-            </p>
+            <p className="text-sm text-gray-400">{formatFileSize(file.size)}</p>
           )}
           {loading && (
             <div className="flex items-center gap-2">

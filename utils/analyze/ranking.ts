@@ -1,10 +1,4 @@
-export type Mensagem = {
-  data: string;
-  hora: string;
-  nome: string;
-  mensagem: string;
-};
-
+import { Mensagem } from "../types/types";
 // -----------------------------------------------------
 // 1) Lista de contagem de TODOS os emojis usados
 // -----------------------------------------------------
