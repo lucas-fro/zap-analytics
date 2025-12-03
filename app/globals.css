@@ -1,5 +1,7 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
+@custom-variant dark (&:is(.dark *));
 
 @theme {
   --color-background: #060709;
@@ -12,4 +14,99 @@
   --color-text-secondary: #808080;
 }
 
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
 
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--foreground);
+  --color-popover: var(--card);
+  --color-popover-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: #ffffff;
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--foreground);
+  --color-muted: var(--color-text-secondary);
+  --color-muted-foreground: var(--color-text-secondary);
+  --color-accent: var(--secondary);
+  --color-accent-foreground: var(--foreground);
+  --color-destructive: #ff4d4d;
+
+  --color-border: var(--border);
+  --color-input: var(--border);
+  --color-ring: var(--primary);
+
+  --color-chart-1: #43C251;
+  --color-chart-2: #888;
+  --color-chart-3: #555;
+  --color-chart-4: #999;
+  --color-chart-5: #ccc;
+}
+
+/* ------------------------- */
+/* THEME FINAL (CORRIGIDO)   */
+/* ------------------------- */
+
+:root {
+  --radius: 0.625rem;
+
+  --background: #060709;
+  --foreground: #F8F8F8;
+
+  --card: #2a2a2f;
+  --card-foreground: #F8F8F8;
+
+  --primary: #43C251;
+  --secondary: #37373d;
+
+  --border: #7D8F8F;
+  --input: #7D8F8F;
+  --ring: #43C251;
+
+  --popover: #0E0F12;
+  --popover-foreground: #F8F8F8;
+
+  --muted: #808080;
+  --muted-foreground: #808080;
+
+  --accent: #37373d;
+  --accent-foreground: #F8F8F8;
+}
+
+.dark {
+  --background: #060709;
+  --foreground: #F8F8F8;
+
+  --card: #2a2a2f;
+  --card-foreground: #F8F8F8;
+
+  --primary: #43C251;
+  --secondary: #37373d;
+
+  --border: #7D8F8F;
+  --input: #7D8F8F;
+  --ring: #43C251;
+
+  --popover: #0E0F12;
+  --popover-foreground: #F8F8F8;
+
+  --muted: #808080;
+  --muted-foreground: #808080;
+
+  --accent: #37373d;
+  --accent-foreground: #F8F8F8;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}

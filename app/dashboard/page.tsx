@@ -5,6 +5,8 @@ import { GroupDatas } from "../../components/groupDatas";
 import { HeaderTopDatas } from "../../components/headerTopDatas";
 import { useDataAnalytics } from "../store/useDatasAnalytycs";
 import { useRouter } from "next/navigation";
+import { CardDados } from "../../components/cardDados";
+import { Home } from "lucide-react";
 
 export default function Dashboard() {
     const data = useDataAnalytics((state: any) => state.data);
@@ -29,31 +31,11 @@ export default function Dashboard() {
     return (
         <div className="min-h-screen flex flex-col overflow-x-hidden bg-background">
             <HeaderTopDatas data={data.topDatas} title={titleMensagens}/>
-            <GroupDatas title="Análises Gerais">
-                <div className="bg-white min-w-[100] w-full rounded-md h-24">
-                    <h1>oi</h1>
-                </div>
-                <div className="bg-white min-w-[100] w-full rounded-md h-24">
-                    <h1>oi</h1>
-                </div>
-                <div className="bg-white min-w-[100] w-full rounded-md h-24">
-                    <h1>oi</h1>
-                </div>
-                <div className="bg-white min-w-[100] w-full rounded-md h-24">
-                    <h1>oi</h1>
-                </div>
-                <div className="bg-white min-w-[100] w-full rounded-md h-24">
-                    <h1>oi</h1>
-                </div>
-                <div className="bg-white min-w-[100] w-full rounded-md h-24">
-                    <h1>oi</h1>
-                </div>
-                <div className="bg-white min-w-[100] w-full rounded-md h-24">
-                    <h1>oi</h1>
-                </div>
-                <div className="bg-white min-w-[100] w-full rounded-md h-24">
-                    <h1>oi</h1>
-                </div>
+            <GroupDatas title="Dados Gerais">
+                <CardDados icon={Home} text="Total de mensagens" data={data.rawDatas.countMensagens} />
+                <CardDados icon={Home} text="Total de emojis" data={data.rawDatas.countMidias} />
+                <CardDados icon={Home} text="Total de mídia" data={data.rawDatas.countEmojis} />
+                <CardDados icon={Home} text="Total de links" data={data.rawDatas.countLinks} />
             </GroupDatas>
         </div>
     );

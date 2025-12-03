@@ -112,7 +112,7 @@ export default function FileUploader({ redirectTo }: { redirectTo: string }) {
           >
             <UploadCloud className="w-10 h-10 mx-auto text-green-400 mb-3" />
             <p className="text-gray-300 mb-4">
-              Arraste um arquivo .zip ou .txt aqui
+              Arraste o arquivo .zip ou .txt da sua conversa exportada aqui
             </p>
 
             <label className="inline-block px-4 py-2 bg-green-500 text-black font-medium rounded-md cursor-pointer hover:bg-green-400 transition">
