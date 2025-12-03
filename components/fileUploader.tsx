@@ -3,8 +3,8 @@
 import React, { useState } from "react";
 import { UploadCloud, FileText, Archive } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { parseFile } from "../utils/parse";
-import { useDataAnalytics } from "../utils/store/useDatasAnalytycs";
+import { parseFile } from "../lib/parse";
+import { useDataAnalytics } from "../lib/store/useDatasAnalytycs";
 
 export default function FileUploader({ redirectTo }: { redirectTo: string }) {
   const [file, setFile] = useState<File | null>(null);

@@ -6,17 +6,17 @@ import FileUploader from "../components/fileUploader";
 export default function Home() {
   return (
     <div className="min-h-screen flex flex-col overflow-x-hidden bg-background">
-      <Header/>  
+      <Header />
       <section className="min-h-dvh flex flex-wrap gap-5 md:p-10 p-5 items-center w-full">
-
         <div className="flex-1 grid md:gap-10 gap-5 text-center md:text-left">
           <h1 className="md:mt-5 mt-10 text-foreground md:text-6xl text-4xl font-bold">
-            Descubra tudo sobre suas <span className="text-primary">conversas do WhatsApp</span>
+            Descubra tudo sobre suas{" "}
+            <span className="text-primary">conversas do WhatsApp</span>
           </h1>
 
           <p className="text-border md:text-2xl text-md">
-            Transforme suas conversas em dados fascinantes. Veja quem mais fala, horários mais ativos,
-            emojis favoritos e muito mais.
+            Transforme suas conversas em dados fascinantes. Veja quem mais fala,
+            horários mais ativos, emojis favoritos e muito mais.
           </p>
 
           <div className="flex flex-wrap justify-center lg:justify-start  md:gap-5 gap-3">
@@ -29,10 +29,7 @@ export default function Home() {
         <div className="flex-1">
           <FileUploader redirectTo="/dashboard" />
         </div>
-
       </section>
-
     </div>
-    
   );
 }
