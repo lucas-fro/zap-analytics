@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
 import { GroupDatas } from "@/components/groupDatas";
 import { HeaderTopDatas } from "@/components/headerTopDatas";
 import { useDataAnalytics } from "@/lib/store/useDatasAnalytycs";
@@ -8,11 +7,11 @@ import { useRouter } from "next/navigation";
 import { CardDados } from "@/components/cardDados";
 import { MessageCircle, Smile, Image, Link, CalendarArrowUp, Clock, MessageSquareDiff } from "lucide-react";
 import { GraficsGroup } from "@/components/graficsGroup";
+import { Table } from "./table";
 
 export function DashboardPage() {
   const data = useDataAnalytics((state: any) => state.data);
   const titleMensagens = useDataAnalytics((state: any) => state.titleMensagens);
-  const router = useRouter();
 
   if (!data) {
     return (
@@ -67,6 +66,8 @@ export function DashboardPage() {
           data={data.metrics.horaMaisAtiva}
         />
       </GroupDatas>
+
+      <Table data={data.dataPerPerson} />
 
       <GraficsGroup data={data.grafics} />
     </div>
