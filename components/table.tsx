@@ -67,10 +67,10 @@ export function Table({ data }: any) {
           </div>
 
           <ScrollArea>
-            <TableUI>
+            <TableUI className="text-lg">
               <TableHeader>
                 <TableRow className="border-b-border">
-                  <TableHead>#</TableHead>
+                  <TableHead className="text-center text-white/0">#</TableHead>
                   <TableHead>Nome</TableHead>
 
                   <TableHead
@@ -118,7 +118,7 @@ export function Table({ data }: any) {
               <TableBody>
                 {sorted.map((person: any, index: number) => (
                   <TableRow key={person.nome} className="border-b-border">
-                    <TableCell>
+                    <TableCell className="text-center">
                         {index < 3
                             ? ["🥇", "🥈", "🥉"][index]
                             : `${index + 1}°`}

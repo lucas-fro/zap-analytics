@@ -14,7 +14,6 @@ const chartConfig = {
 
 export function GraficMsgnMes({ data }: { data: any[] }) {
 
-    console.log("data grafico mensagens por mes:", data);
     return (
         <Card>
             <CardHeader>
