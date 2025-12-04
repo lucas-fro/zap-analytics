@@ -34,12 +34,12 @@ export function DashboardPage() {
         <CardDados
           icon={Smile}
           text="Total de Emojis"
-          data={data.rawDatas.countMidias}
+          data={data.rawDatas.countEmojis}
         />
         <CardDados
           icon={Image}
           text="Total de Mídia"
-          data={data.rawDatas.countEmojis}
+          data={data.rawDatas.countMidias}
         />
         <CardDados
           icon={Link}
