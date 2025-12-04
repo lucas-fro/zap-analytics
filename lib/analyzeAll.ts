@@ -4,6 +4,7 @@ import { mediaMensagensPorDia, horaMaisAtiva, diaMaisAtivo } from "./analyze/met
 import { estatisticasPorParticipante } from "./analyze/dataPerPerson";
 import { getEmojiCountList, getTop20Palavras } from "./analyze/ranking";
 import { Mensagem } from "./types/types";
+import { mensagensPorDiaSemanaPorPessoa, mensagensPorHoraPorPessoa, mensagensPorMes, mensagensPorPessoaPorMes } from "./analyze/grafics";
 
 export function analyzeAll(menssagens: Mensagem[]) {
     return ({
@@ -23,6 +24,12 @@ export function analyzeAll(menssagens: Mensagem[]) {
         ranking: {
             topEmojis: getEmojiCountList(menssagens),
             topPalavras: getTop20Palavras(menssagens),
+        },
+        grafics: {
+            mensagensPorMes: mensagensPorMes(menssagens),
+            mensagensPorHoraPorPessoa: mensagensPorHoraPorPessoa(menssagens),
+            mensagensPorDiaSemanaPorPessoa: mensagensPorDiaSemanaPorPessoa(menssagens),
+            mensagensPorPessoaPorMes: mensagensPorPessoaPorMes(menssagens),
         }
         
     });

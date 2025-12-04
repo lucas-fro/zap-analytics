@@ -99,7 +99,6 @@
 
   --accent: #37373d;
   --accent-foreground: #F8F8F8;
-}
 
 @layer base {
   * {
@@ -108,5 +107,6 @@
 
   body {
     @apply bg-background text-foreground;
+  }
   }
 }
