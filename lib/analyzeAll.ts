@@ -3,10 +3,12 @@ import { totalMensagens, totalMidias, totalEmojis, totalLinks } from "./analyze/
 import { mediaMensagensPorDia, horaMaisAtiva, diaMaisAtivo } from "./analyze/metrics";
 import { estatisticasPorParticipante } from "./analyze/dataPerPerson";
 import { getEmojiCountList, getTop20Palavras } from "./analyze/ranking";
-import { Mensagem } from "./types/types";
+import { AnalyzeAllResult, Mensagem } from "./types/types";
 import { mensagensPorDiaSemanaPorPessoa, mensagensPorHoraPorPessoa, mensagensPorMes, mensagensPorPessoaPorMes } from "./analyze/grafics";
 
-export function analyzeAll(menssagens: Mensagem[]) {
+
+
+export function analyzeAll(menssagens: Mensagem[]) : AnalyzeAllResult {
     return ({
         topDatas: topDatas(menssagens),
         rawDatas: {

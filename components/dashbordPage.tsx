@@ -10,8 +10,8 @@ import { GraficsGroup } from "@/components/graficsGroup";
 import { Table } from "./table";
 
 export function DashboardPage() {
-  const data = useDataAnalytics((state: any) => state.data);
-  const titleMensagens = useDataAnalytics((state: any) => state.titleMensagens);
+  const data = useDataAnalytics((state) => state.data);
+  const titleMensagens = useDataAnalytics((state) => state.titleMensagens);
 
   if (!data) {
     return (

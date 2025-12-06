@@ -1,8 +1,8 @@
-import { Mensagem } from "../types/types";
+import { Mensagem, RankingEmojis, RankingPalavras } from "../types/types";
 // -----------------------------------------------------
 // 1) Lista de contagem de TODOS os emojis usados
 // -----------------------------------------------------
-export function getEmojiCountList(mensagens: Mensagem[]) {
+export function getEmojiCountList(mensagens: Mensagem[]) : RankingEmojis[] {
   const emojiRegex = /\p{Emoji_Presentation}/gu;
   const mapa: Record<string, number> = {};
 
@@ -29,7 +29,7 @@ export function getEmojiCountList(mensagens: Mensagem[]) {
 // -----------------------------------------------------
 // 2) Top 20 palavras mais ditas (ignorando stopwords)
 // -----------------------------------------------------
-export function getTop20Palavras(mensagens: Mensagem[]) {
+export function getTop20Palavras(mensagens: Mensagem[]) : RankingPalavras[] {
   // Stopwords em português — pode expandir depois se quiser
   const stopwords = new Set([
     "a","o","as","os","um","uma","de","da","do","das","dos",
@@ -40,7 +40,7 @@ export function getTop20Palavras(mensagens: Mensagem[]) {
     "tua","seu","sua","já","mas","pra","pro","tá","to","tô",
     "um","uma","uns","umas","depois","quando","onde","como",
     "vcs","vc","pq","ta","só","me", "mídia", "oculta", "https",
-    "mensagem"
+    "mensagem", "foi", "não", "nao", "sim", "tem", "mais", "muito"
   ]);
 
   const palavraCount: Record<string, number> = {};

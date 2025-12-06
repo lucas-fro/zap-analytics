@@ -2,7 +2,7 @@ import { Mensagem } from "../types/types";
 // --------------------------------------
 // 1) Média de mensagens por dia
 // --------------------------------------
-export function mediaMensagensPorDia(mensagens: Mensagem[]) {
+export function mediaMensagensPorDia(mensagens: Mensagem[]) : number {
   if (mensagens.length === 0) return 0;
 
   // datas únicas
@@ -18,7 +18,7 @@ export function mediaMensagensPorDia(mensagens: Mensagem[]) {
 // 2) Hora mais ativa
 // Retorna "16:00", "21:00", etc.
 // --------------------------------------
-export function horaMaisAtiva(mensagens: Mensagem[]) {
+export function horaMaisAtiva(mensagens: Mensagem[]) : string | null {
   if (mensagens.length === 0) return null;
 
   const contagemPorHora: Record<string, number> = {};
@@ -47,17 +47,17 @@ export function horaMaisAtiva(mensagens: Mensagem[]) {
 // 3) Dia mais ativo da semana
 // Retorna "segunda", "terça", etc.
 // --------------------------------------
-export function diaMaisAtivo(mensagens: Mensagem[]) {
+export function diaMaisAtivo(mensagens: Mensagem[]) : string | null {
   if (mensagens.length === 0) return null;
 
   const nomesDias = [
-    "domingo",
-    "segunda",
-    "terça",
-    "quarta",
-    "quinta",
-    "sexta",
-    "sábado",
+    "Domingo",
+    "Segunda",
+    "Terça",
+    "Quarta",
+    "Quinta",
+    "Sexta",
+    "Sábado",
   ];
 
   const contagem: Record<string, number> = {};

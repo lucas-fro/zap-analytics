@@ -1,4 +1,4 @@
-import { Mensagem } from "../types/types";
+import { Mensagem, MensagensPorDiaSemanaPorPessoa, MensagensPorHoraPorPessoa, MensagensPorPessoaPorMes, MenssagensPorMes } from "../types/types";
 
 
 // Helper para converter DD/MM/YYYY → YYYY-MM para gráficos
@@ -22,7 +22,7 @@ function getWeekdayName(dateStr: string) {
 //   { month: "2024-02", total: 55 },
 // ]
 // -----------------------------------------------------------
-export function mensagensPorMes(mensagens: Mensagem[]) {
+export function mensagensPorMes(mensagens: Mensagem[]) : MenssagensPorMes[] {
   const mapa: Record<string, number> = {};
 
   for (const msg of mensagens) {
@@ -44,7 +44,7 @@ export function mensagensPorMes(mensagens: Mensagem[]) {
 //   { hour: "01", Lucas: 0, Ana: 3, João: 0 },
 // ]
 // -----------------------------------------------------------
-export function mensagensPorHoraPorPessoa(mensagens: Mensagem[]) {
+export function mensagensPorHoraPorPessoa(mensagens: Mensagem[]) : MensagensPorHoraPorPessoa[] {
   const mapa: Record<string, Record<string, number>> = {};
 
   for (const msg of mensagens) {
@@ -69,7 +69,7 @@ export function mensagensPorHoraPorPessoa(mensagens: Mensagem[]) {
 //   { weekday: "Ter", Lucas: 7, Ana: 5 },
 // ]
 // -----------------------------------------------------------
-export function mensagensPorDiaSemanaPorPessoa(mensagens: Mensagem[]) {
+export function mensagensPorDiaSemanaPorPessoa(mensagens: Mensagem[]) : MensagensPorDiaSemanaPorPessoa[] {
   const mapa: Record<string, Record<string, number>> = {};
 
   for (const msg of mensagens) {
@@ -96,7 +96,7 @@ export function mensagensPorDiaSemanaPorPessoa(mensagens: Mensagem[]) {
 //   { month: "2025-10", Lucas: 42, Ana: 12 },
 // ]
 // -----------------------------------------------------------
-export function mensagensPorPessoaPorMes(mensagens: Mensagem[]) {
+export function mensagensPorPessoaPorMes(mensagens: Mensagem[]) : MensagensPorPessoaPorMes[] {
   const mapaMes: Record<string, Record<string, number>> = {};
 
   for (const msg of mensagens) {

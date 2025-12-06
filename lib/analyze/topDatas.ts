@@ -1,6 +1,6 @@
-import { Mensagem } from "../types/types";
+import { Mensagem, TopDatas } from "../types/types";
 
-export function topDatas(mensagens: Mensagem[]) {
+export function topDatas(mensagens: Mensagem[]) : TopDatas {
   if (!mensagens.length) {
     return {
       dataInicial: null,

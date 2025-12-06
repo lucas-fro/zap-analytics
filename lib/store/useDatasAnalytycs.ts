@@ -1,15 +1,16 @@
-import { create } from "zustand"
-import { persist } from "zustand/middleware"
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import { AnalyzeAllResult } from "../types/types";
 
 interface AnalyticsStore {
-  data: any | null
-  titleMensagens: string | null
-  setData: (value: any) => void
-  setTitleMensagens: (value: string) => void
+  data: AnalyzeAllResult | null;
+  titleMensagens: string | null;
+  setData: (value: AnalyzeAllResult) => void;
+  setTitleMensagens: (value: string | null) => void;
 }
 
-export const useDataAnalytics = create(
-  persist<AnalyticsStore>(
+export const useDataAnalytics = create<AnalyticsStore>()(
+  persist(
     (set) => ({
       data: null,
       titleMensagens: null,
@@ -17,6 +18,6 @@ export const useDataAnalytics = create(
       setData: (value) => set({ data: value }),
       setTitleMensagens: (value) => set({ titleMensagens: value }),
     }),
-    { name: "big-json-storage" }
+    { name: "dados-analisados" }
   )
-)
+);

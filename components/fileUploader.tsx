@@ -5,6 +5,7 @@ import { UploadCloud, FileText, Archive } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { parseFile } from "../lib/parse";
 import { useDataAnalytics } from "../lib/store/useDatasAnalytycs";
+import { AnalyzeAllResult } from "@/lib/types/types";
 
 export default function FileUploader({ redirectTo }: { redirectTo: string }) {
   const [file, setFile] = useState<File | null>(null);
@@ -12,8 +13,8 @@ export default function FileUploader({ redirectTo }: { redirectTo: string }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const setData = useDataAnalytics((state: any) => state.setData);
-  const setTitle = useDataAnalytics((state: any) => state.setTitleMensagens);
+  const setData = useDataAnalytics((state) => state.setData);
+  const setTitle = useDataAnalytics((state) => state.setTitleMensagens);
   const router = useRouter();
 
   const isValidFile = (f: File) =>

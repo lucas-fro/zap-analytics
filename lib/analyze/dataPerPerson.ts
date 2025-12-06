@@ -1,13 +1,8 @@
-import { Mensagem } from "../types/types";
+import { EstatisticasPorParticipante, Mensagem } from "../types/types";
 
-export function estatisticasPorParticipante(mensagens: Mensagem[]) {
-  const participantes: {
-    nome: string;
-    totalMensagens: number;
-    totalEmojis: number;
-    totalMidias: number;
-    totalPalavras: number;
-  }[] = [];
+export function estatisticasPorParticipante(mensagens: Mensagem[]) : EstatisticasPorParticipante[] {
+
+  const participantes: EstatisticasPorParticipante[] = [];
 
   const emojiRegex = /\p{Emoji_Presentation}/gu;
   const midiaRegex = /<\s*m[ií]dia oculta\s*>/gi;
@@ -16,7 +11,7 @@ export function estatisticasPorParticipante(mensagens: Mensagem[]) {
     const nome = msg.nome;
 
     // Procura se o participante já existe no array
-    let participante = participantes.find(p => p.nome === nome);
+    let participante = participantes.find((p) => p.nome === nome);
 
     // Se não existir, cria
     if (!participante) {
@@ -41,13 +36,14 @@ export function estatisticasPorParticipante(mensagens: Mensagem[]) {
     const midias = msg.mensagem.match(midiaRegex);
     if (midias) participante.totalMidias += midias.length;
 
-    // 4) Total de palavras
-    const palavras = msg.mensagem
-      .replace(/\s+/g, " ")
-      .trim()
-      .split(" ");
+    // 4) Total de palavras (ignorando emojis e <Mídia oculta>)
+    let textoLimpo = msg.mensagem
+      .replace(midiaRegex, "") // remove "<Mídia oculta>"
+      .replace(/\p{Extended_Pictographic}/gu, "") // remove emojis
+      .trim();
 
-    if (palavras[0] !== "") {
+    if (textoLimpo !== "") {
+      const palavras = textoLimpo.split(/\s+/); // divide onde tem espaço
       participante.totalPalavras += palavras.length;
     }
   }

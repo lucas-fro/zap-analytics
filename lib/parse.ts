@@ -1,7 +1,8 @@
 import JSZip from 'jszip'; 
 import { extractMessages } from './extractMessages';
+import { AnalyzeAllResult } from './types/types';
 
-export async function parseFile(file: File): Promise<string | { topDatas: any; rawDatas: any; metrics: any; dataPerPerson: Record<string, any>; ranking: any; }> {
+export async function parseFile(file: File): Promise<AnalyzeAllResult> {
   console.log("Processando arquivo:", file.name);
 
   // 1. Verificar se é um arquivo ZIP
