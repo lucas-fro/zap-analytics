@@ -9,7 +9,7 @@ export default function Home() {
       <Header />
       <section className="min-h-dvh flex md:flex-row flex-col gap-5 md:p-10 p-5 items-center w-full">
         <div className="flex-1 grid md:gap-10 gap-5 text-center md:text-left">
-          <h1 className="md:mt-5 mt-10 text-foreground md:text-6xl text-4xl font-bold">
+          <h1 className="md:mt-5 mt-20 text-foreground md:text-6xl text-4xl font-bold">
             Descubra tudo sobre suas{" "}
             <span className="text-primary">conversas do WhatsApp</span>
           </h1>
