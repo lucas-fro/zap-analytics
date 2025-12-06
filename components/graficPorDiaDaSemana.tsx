@@ -64,7 +64,7 @@ export function GraficPorDiaDaSemana({
                 axisLine={false}
               />
 
-              <ChartTooltip content={<ChartTooltipContent hideLabel />} />
+              <ChartTooltip content={<ChartTooltipContent />} />
               <ChartLegend content={<ChartLegendContent className="flex flex-wrap gap-x-4 gap-y-1 text-xs" />} />
 
               {pessoas.map((pessoa) => (
@@ -73,7 +73,7 @@ export function GraficPorDiaDaSemana({
                   dataKey={pessoa}
                   stackId="a"
                   fill={chartConfig[pessoa].color}
-                  radius={[4, 4, 4, 4]}
+                  radius={[0, 0, 0, 0]}
                 />
               ))}
             </BarChart>
