@@ -20,7 +20,6 @@ export function getEmojiCountList(mensagens: Mensagem[]) : RankingEmojis[] {
   const emojiList = Object.entries(mapa)
     .sort((a, b) => b[1] - a[1])
     .map(([emoji, quantidade]) => ({ emoji, quantidade }))
-    .slice(0, 20);
 
   return emojiList;
 }
@@ -29,7 +28,7 @@ export function getEmojiCountList(mensagens: Mensagem[]) : RankingEmojis[] {
 // -----------------------------------------------------
 // 2) Top 20 palavras mais ditas (ignorando stopwords)
 // -----------------------------------------------------
-export function getTop20Palavras(mensagens: Mensagem[]) : RankingPalavras[] {
+export function getTop10Palavras(mensagens: Mensagem[]) : RankingPalavras[] {
   // Stopwords em português — pode expandir depois se quiser
   const stopwords = new Set([
     "a","o","as","os","um","uma","de","da","do","das","dos",
@@ -68,7 +67,7 @@ export function getTop20Palavras(mensagens: Mensagem[]) : RankingPalavras[] {
   // Ordenar por mais usadas
   const ordenadas = Object.entries(palavraCount)
     .sort((a, b) => b[1] - a[1])
-    .slice(0, 20);
+    .slice(0, 10);
 
   // Retorna como objeto organizado
   return ordenadas.map(([palavra, qtd]) => ({

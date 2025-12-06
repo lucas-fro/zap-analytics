@@ -22,7 +22,7 @@ export function GraficMsgnMes({ data, className }: { data: MenssagensPorMes[], c
                 <CardTitle>Mensagens por Mês</CardTitle>
             </CardHeader>
             <CardContent>
-                <ChartContainer config={chartConfig} className="h-[300px] w-full">
+                <ChartContainer config={chartConfig} className="h-[350px] w-full">
                     <AreaChart data={data} accessibilityLayer >
                         <CartesianGrid vertical={false} strokeDasharray="8 3"/>
                         <XAxis 
@@ -37,7 +37,7 @@ export function GraficMsgnMes({ data, className }: { data: MenssagensPorMes[], c
                             tickMargin={8}
                         />
                         
-                        <ChartTooltip cursor={false} content={<ChartTooltipContent/>}/>
+                        <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line"/>}/>
                         <defs>
                             <linearGradient id="fillTotal" x1="0" y1="0" x2="0" y2="1">
                                 <stop

@@ -3,7 +3,6 @@
 import { GroupDatas } from "@/components/groupDatas";
 import { HeaderTopDatas } from "@/components/headerTopDatas";
 import { useDataAnalytics } from "@/lib/store/useDatasAnalytycs";
-import { useRouter } from "next/navigation";
 import { CardDados } from "@/components/cardDados";
 import { MessageCircle, Smile, Image, Link, CalendarArrowUp, Clock, MessageSquareDiff } from "lucide-react";
 import { GraficsGroup } from "@/components/graficsGroup";
@@ -69,7 +68,7 @@ export function DashboardPage() {
 
       <Table data={data.dataPerPerson} />
 
-      <GraficsGroup data={data.grafics} />
+      <GraficsGroup data={data} />
     </div>
   );
 }

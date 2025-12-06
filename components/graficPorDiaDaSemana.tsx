@@ -49,7 +49,7 @@ export function GraficPorDiaDaSemana({
         </CardHeader>
 
         <CardContent>
-          <ChartContainer config={chartConfig} className="h-[300px] w-full">
+          <ChartContainer config={chartConfig} className="h-[350px] w-full">
             <BarChart data={data} layout="vertical">
               <CartesianGrid horizontal={false} strokeDasharray="8 3" />
 
