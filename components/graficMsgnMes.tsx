@@ -24,13 +24,18 @@ export function GraficMsgnMes({ data, className }: { data: MenssagensPorMes[], c
             <CardContent>
                 <ChartContainer config={chartConfig} className="h-[300px] w-full">
                     <AreaChart data={data} accessibilityLayer >
-                        <CartesianGrid vertical={false}/>
+                        <CartesianGrid vertical={false} strokeDasharray="8 3"/>
                         <XAxis 
                             dataKey="month" 
                             tickLine={false}
                             axisLine={false}
                             tickMargin={8}
                             />
+                        <YAxis
+                            tickLine={false}
+                            axisLine={false}
+                            tickMargin={8}
+                        />
                         
                         <ChartTooltip cursor={false} content={<ChartTooltipContent/>}/>
                         <defs>
@@ -49,7 +54,7 @@ export function GraficMsgnMes({ data, className }: { data: MenssagensPorMes[], c
                         </defs>
                         <Area
                             dataKey="total"
-                            type="natural"
+                            type="linear"
                             fill="url(#fillTotal)"
                             fillOpacity={0.4}
                             stroke="var(--color-primary)"

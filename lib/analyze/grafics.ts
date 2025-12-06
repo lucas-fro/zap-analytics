@@ -96,20 +96,30 @@ export function mensagensPorDiaSemanaPorPessoa(mensagens: Mensagem[]) : Mensagen
 //   { month: "2025-10", Lucas: 42, Ana: 12 },
 // ]
 // -----------------------------------------------------------
-export function mensagensPorPessoaPorMes(mensagens: Mensagem[]) : MensagensPorPessoaPorMes[] {
+export function mensagensPorPessoaPorMes(mensagens: Mensagem[]): MensagensPorPessoaPorMes[] {
   const mapaMes: Record<string, Record<string, number>> = {};
+  const todasPessoas = new Set<string>();
 
+  // Primeiro loop: contar mensagens e coletar todos os nomes
   for (const msg of mensagens) {
     const monthKey = toMonthKey(msg.data);
     if (!mapaMes[monthKey]) mapaMes[monthKey] = {};
     if (!mapaMes[monthKey][msg.nome]) mapaMes[monthKey][msg.nome] = 0;
     mapaMes[monthKey][msg.nome]++;
+    todasPessoas.add(msg.nome);
   }
 
   const mesesOrdenados = Object.keys(mapaMes).sort();
 
-  return mesesOrdenados.map(month => ({
-    month,
-    ...mapaMes[month]
-  }));
+  // Segundo loop: garantir que todos os nomes apareçam em todos os meses
+  return mesesOrdenados.map(month => {
+    const resultado: MensagensPorPessoaPorMes = { month };
+    
+    // Adicionar todas as pessoas, com 0 se não existir
+    todasPessoas.forEach(pessoa => {
+      resultado[pessoa] = mapaMes[month][pessoa] || 0;
+    });
+    
+    return resultado;
+  });
 }

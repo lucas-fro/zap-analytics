@@ -2,6 +2,7 @@ import { GraficData } from '@/lib/types/types';
 import { GraficMsgnMes } from './graficMsgnMes';
 import { GraficPorDiaDaSemana } from './graficPorDiaDaSemana';
 import { GraficAtividadePorHora } from './graficAtividadePorHora';
+import { GraficMensagensPorPessoaPorMes } from './graficMensagensPorPessoaPorMes';
 
 export function GraficsGroup({ data } : { data: GraficData }) {
 
@@ -12,6 +13,7 @@ export function GraficsGroup({ data } : { data: GraficData }) {
                 <GraficMsgnMes data={data.mensagensPorMes} className='md:col-span-2'/>
                 <GraficPorDiaDaSemana data={data.mensagensPorDiaSemanaPorPessoa} />
                 <GraficAtividadePorHora data={data.mensagensPorHoraPorPessoa} />
+                <GraficMensagensPorPessoaPorMes data={data.mensagensPorPessoaPorMes}/>
 
             </div>
         </section>    

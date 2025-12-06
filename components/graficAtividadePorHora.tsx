@@ -51,7 +51,7 @@ export function GraficAtividadePorHora({
           <ChartContainer config={chartConfig} className="h-[300px] w-full">
             
             <BarChart data={data}>
-              <CartesianGrid vertical={false} />
+              <CartesianGrid vertical={false} strokeDasharray="8 3"/>
 
               {/* O eixo correto é hour */}
               <XAxis

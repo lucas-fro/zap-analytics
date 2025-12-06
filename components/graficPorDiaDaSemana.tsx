@@ -45,13 +45,13 @@ export function GraficPorDiaDaSemana({
     <div className={className}>
       <Card>
         <CardHeader>
-          <CardTitle>Por dia da semana</CardTitle>
+          <CardTitle>Por Dia da Semana</CardTitle>
         </CardHeader>
 
         <CardContent>
           <ChartContainer config={chartConfig} className="h-[300px] w-full">
             <BarChart data={data} layout="vertical">
-              <CartesianGrid horizontal={false} />
+              <CartesianGrid horizontal={false} strokeDasharray="8 3" />
 
               <XAxis
                 type="number"
