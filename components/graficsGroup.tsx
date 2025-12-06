@@ -5,6 +5,7 @@ import { GraficAtividadePorHora } from './graficAtividadePorHora';
 import { GraficMensagensPorPessoaPorMes } from './graficMensagensPorPessoaPorMes';
 import { GraficoRankingPalavras } from './rankingPalavras';
 import { GraficoRankingEmojis } from './rankingEmojis';
+import { GraficoPorcentagemMensagens } from './graficPorcentagemParticipacao';
 
 export function GraficsGroup({ data } : { data: AnalyzeAllResult }) {
 
@@ -16,8 +17,10 @@ export function GraficsGroup({ data } : { data: AnalyzeAllResult }) {
                 <GraficPorDiaDaSemana data={data.grafics.mensagensPorDiaSemanaPorPessoa} />
                 <GraficAtividadePorHora data={data.grafics.mensagensPorHoraPorPessoa} />
                 <GraficMensagensPorPessoaPorMes data={data.grafics.mensagensPorPessoaPorMes}/>
+                <GraficoPorcentagemMensagens data={data.dataPerPerson}/>
                 <GraficoRankingPalavras data={data.ranking.topPalavras} />
                 <GraficoRankingEmojis data={data.ranking.topEmojis}/>
+
             </div>
         </section>    
     )

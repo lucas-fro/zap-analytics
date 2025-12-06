@@ -6,6 +6,8 @@ export function estatisticasPorParticipante(mensagens: Mensagem[]) : Estatistica
 
   const emojiRegex = /\p{Emoji_Presentation}/gu;
   const midiaRegex = /<\s*m[ií]dia oculta\s*>/gi;
+  const mensagemApagadaRegex = /mensagem apagada/gi;
+  const mensagemEditadaRegex = /<\s*mensagem editada\s*>/gi;
 
   for (const msg of mensagens) {
     const nome = msg.nome;
@@ -36,14 +38,16 @@ export function estatisticasPorParticipante(mensagens: Mensagem[]) : Estatistica
     const midias = msg.mensagem.match(midiaRegex);
     if (midias) participante.totalMidias += midias.length;
 
-    // 4) Total de palavras (ignorando emojis e <Mídia oculta>)
+    // 4) Total de palavras (ignorando emojis, <Mídia oculta>, "Mensagem apagada" e <Mensagem editada>)
     let textoLimpo = msg.mensagem
       .replace(midiaRegex, "") // remove "<Mídia oculta>"
+      .replace(mensagemApagadaRegex, "") // remove "Mensagem apagada"
+      .replace(mensagemEditadaRegex, "") // remove "<Mensagem editada>"
       .replace(/\p{Extended_Pictographic}/gu, "") // remove emojis
       .trim();
 
     if (textoLimpo !== "") {
-      const palavras = textoLimpo.split(/\s+/); // divide onde tem espaço
+      const palavras = textoLimpo.split(/\s+/).filter(p => p.length > 0); // divide onde tem espaço e remove strings vazias
       participante.totalPalavras += palavras.length;
     }
   }

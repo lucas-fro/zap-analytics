@@ -50,7 +50,7 @@ export function GraficoRankingEmojis({
         </CardHeader>
 
         <CardContent>
-          <ChartContainer config={chartConfig} className="h-[350px] w-full">
+          <ChartContainer config={chartConfig} className="h-[330px] w-full">
             <BarChart
               data={top10Emojis}
               layout="vertical"

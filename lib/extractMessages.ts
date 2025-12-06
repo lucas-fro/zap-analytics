@@ -1,12 +1,5 @@
 import { analyzeAll } from "./analyzeAll";
-import { AnalyzeAllResult } from "./types/types";
-
-type Mensagem = {
-  data: string;
-  hora: string;
-  nome: string;
-  mensagem: string;
-};
+import { AnalyzeAllResult, Mensagem } from "./types/types";
 
 export async function extractMessages(chatText: string): Promise<AnalyzeAllResult> {
   // A regex identifica o início de uma nova linha de mensagem válida:
@@ -83,8 +76,13 @@ export async function extractMessages(chatText: string): Promise<AnalyzeAllResul
 
     resultados.push(mensagem);
   }
-    
-  const newResultado = analyzeAll(resultados);
+  
+  console.log(resultados);
+
+  // 4. Filtrar mensagens do Meta AI antes de enviar para análise
+  const resultadosFiltrados = resultados.filter(msg => msg.nome !== "Meta AI");
+
+  const newResultado = analyzeAll(resultadosFiltrados);
 
   console.log(newResultado);
 
