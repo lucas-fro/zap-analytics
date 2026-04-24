@@ -1,4 +1,7 @@
+"use client"
+
 import { useState, useMemo } from "react"
+import { Trophy } from "lucide-react"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {
   TableUI,
@@ -21,143 +24,155 @@ import {
 
 import { Card } from "./ui/card";
 import { cn } from "@/lib/utils";
+import { EstatisticasPorParticipante } from "@/lib/types/types";
 
-export function Table({ data }: any) {
+type FilterKey = "Mensagens" | "Palavras" | "Emojis" | "Mídias";
 
-  const [filter, setFilter] = useState("Mensagens");
+const filterMap: Record<FilterKey, keyof EstatisticasPorParticipante> = {
+  Mensagens: "totalMensagens",
+  Palavras: "totalPalavras",
+  Emojis: "totalEmojis",
+  Mídias: "totalMidias",
+};
 
-  //Mapeamento entre nome exibido e chave do objeto
-  const filterMap: any = {
-    "Mensagens": "totalMensagens",
-    "Palavras": "totalPalavras",
-    "Emojis": "totalEmojis",
-    "Mídias": "totalMidias",
-  };
+function getInitials(name: string) {
+  const parts = name.trim().split(/\s+/);
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
 
-  //Ordena dinamicamente com base no filtro selecionado
+function hashHue(str: string) {
+  let h = 0;
+  for (let i = 0; i < str.length; i++) {
+    h = (h * 31 + str.charCodeAt(i)) >>> 0;
+  }
+  return h % 360;
+}
+
+export function Table({ data }: { data: EstatisticasPorParticipante[] }) {
+  const [filter, setFilter] = useState<FilterKey>("Mensagens");
+
   const sorted = useMemo(() => {
     const key = filterMap[filter];
-    return [...data].sort((a, b) => b[key] - a[key]);
+    return [...data].sort((a, b) => (b[key] as number) - (a[key] as number));
   }, [filter, data]);
 
+  const activeKey = filterMap[filter];
+
   return (
-    <section className="flex flex-col gap-4 mt-5 p-4 w-full max-w-[1200px] mx-auto">
-      <h1 className="text-foreground font-bold text-3xl">
-        Ranking de Participantes
-      </h1>
-
-      <div>
-        <Card className="p-0 md:p-0">
-
-          <div className="flex justify-end pt-2 pr-2">
-            <Select onValueChange={setFilter}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Filtrar por" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Filtro</SelectLabel>
-                  <SelectItem value="Mensagens">Mensagens</SelectItem>
-                  <SelectItem value="Palavras">Palavras</SelectItem>
-                  <SelectItem value="Emojis">Emojis</SelectItem>
-                  <SelectItem value="Mídias">Mídias</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <ScrollArea>
-            <TableUI className="text-lg">
-              <TableHeader>
-                <TableRow className="border-b-border">
-                  <TableHead className="text-center text-white/0">#</TableHead>
-                  <TableHead>Nome</TableHead>
-
-                  <TableHead
-                    className={cn(
-                      filter === "Mensagens"
-                        ? "font-bold text-foreground"
-                        : "text-muted-foreground"
-                    )}
-                  >
-                    Mensagens
-                  </TableHead>
-
-                  <TableHead
-                    className={cn(
-                      filter === "Palavras"
-                        ? "font-bold text-foreground"
-                        : "text-muted-foreground"
-                    )}
-                  >
-                    Palavras
-                  </TableHead>
-
-                  <TableHead
-                    className={cn(
-                      filter === "Emojis"
-                        ? "font-bold text-foreground"
-                        : "text-muted-foreground"
-                    )}
-                  >
-                    Emojis
-                  </TableHead>
-
-                  <TableHead
-                    className={cn(
-                      filter === "Mídias"
-                        ? "font-bold text-foreground"
-                        : "text-muted-foreground"
-                    )}
-                  >
-                    Mídias
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-
-              <TableBody>
-                {sorted.map((person: any, index: number) => (
-                  <TableRow key={person.nome} className="border-b-border">
-                    <TableCell className="text-center">
-                        {index < 3
-                            ? ["🥇", "🥈", "🥉"][index]
-                            : `${index + 1}°`}
-                    </TableCell>
-
-                    <TableCell>{person.nome}</TableCell>
-
-                    <TableCell
-                      className={filter === "Mensagens" ? "font-bold" : "text-muted-foreground"}
-                    >
-                      {person.totalMensagens}
-                    </TableCell>
-
-                    <TableCell
-                      className={filter === "Palavras" ? "font-bold" : "text-muted-foreground"}
-                    >
-                      {person.totalPalavras}
-                    </TableCell>
-
-                    <TableCell
-                      className={filter === "Emojis" ? "font-bold" : "text-muted-foreground"}
-                    >
-                      {person.totalEmojis}
-                    </TableCell>
-
-                    <TableCell
-                      className={filter === "Mídias" ? "font-bold" : "text-muted-foreground"}
-                    >
-                      {person.totalMidias}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </TableUI>
-
-            <ScrollBar orientation="horizontal" />
-          </ScrollArea>
-        </Card>
+    <section className="flex flex-col gap-4 md:gap-5 mt-6 md:mt-10 px-5 md:px-10 w-full max-w-6xl mx-auto">
+      <div className="flex items-center gap-3">
+        <div className="bg-primary/15 border border-primary/30 size-9 md:size-10 rounded-xl flex items-center justify-center shrink-0">
+          <Trophy className="size-4 md:size-5 text-primary" />
+        </div>
+        <h2 className="text-foreground font-bold text-2xl md:text-3xl">
+          Ranking de Participantes
+        </h2>
       </div>
+
+      <Card className="p-0 md:p-0 overflow-hidden">
+        <div className="flex justify-between items-center px-4 md:px-5 py-3 border-b border-white/10">
+          <p className="text-text-secondary text-sm hidden sm:block">
+            Ordenado por <span className="text-primary font-medium">{filter}</span>
+          </p>
+          <Select onValueChange={(v) => setFilter(v as FilterKey)} defaultValue="Mensagens">
+            <SelectTrigger className="w-40 sm:w-[180px]">
+              <SelectValue placeholder="Filtrar por" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Filtro</SelectLabel>
+                <SelectItem value="Mensagens">Mensagens</SelectItem>
+                <SelectItem value="Palavras">Palavras</SelectItem>
+                <SelectItem value="Emojis">Emojis</SelectItem>
+                <SelectItem value="Mídias">Mídias</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <ScrollArea>
+          <TableUI className="text-base md:text-lg">
+            <TableHeader>
+              <TableRow className="border-b-border hover:bg-transparent">
+                <TableHead className="text-center w-12">#</TableHead>
+                <TableHead>Nome</TableHead>
+
+                {(Object.keys(filterMap) as FilterKey[]).map((col) => (
+                  <TableHead
+                    key={col}
+                    className={cn(
+                      "transition-colors",
+                      filter === col
+                        ? "font-bold text-primary"
+                        : "text-muted-foreground"
+                    )}
+                  >
+                    {col}
+                  </TableHead>
+                ))}
+              </TableRow>
+            </TableHeader>
+
+            <TableBody>
+              {sorted.map((person, index) => {
+                const hue = hashHue(person.nome);
+                const initials = getInitials(person.nome);
+
+                return (
+                  <TableRow
+                    key={person.nome}
+                    className="border-b-border hover:bg-primary/5 transition-colors"
+                  >
+                    <TableCell className="text-center font-medium">
+                      {index < 3
+                        ? ["🥇", "🥈", "🥉"][index]
+                        : <span className="text-text-secondary">{index + 1}°</span>}
+                    </TableCell>
+
+                    <TableCell>
+                      <div className="flex items-center gap-3">
+                        <div
+                          className="size-9 rounded-full flex items-center justify-center font-bold text-sm border shrink-0"
+                          style={{
+                            backgroundColor: `hsl(${hue} 60% 25%)`,
+                            borderColor: `hsl(${hue} 60% 40%)`,
+                            color: `hsl(${hue} 80% 80%)`,
+                          }}
+                        >
+                          {initials}
+                        </div>
+                        <span className="font-medium truncate max-w-[150px] md:max-w-none">
+                          {person.nome}
+                        </span>
+                      </div>
+                    </TableCell>
+
+                    {(Object.keys(filterMap) as FilterKey[]).map((col) => {
+                      const k = filterMap[col];
+                      return (
+                        <TableCell
+                          key={col}
+                          className={cn(
+                            "transition-colors",
+                            activeKey === k
+                              ? "font-bold text-foreground"
+                              : "text-muted-foreground"
+                          )}
+                        >
+                          {(person[k] as number).toLocaleString("pt-BR")}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </TableUI>
+
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
+      </Card>
     </section>
   );
 }

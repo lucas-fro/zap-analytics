@@ -102,28 +102,28 @@ export default function FileUploader({ redirectTo }: { redirectTo: string }) {
   };
 
   return (
-    <div className="max-w-xl mx-auto border rounded-xl p-6 bg-[#1f1f23] text-[#fafafa]">
+    <div className="max-w-xl w-full mx-auto border border-white/10 rounded-2xl p-4 sm:p-6 bg-[#1f1f23] text-[#fafafa] shadow-xl shadow-black/30">
       {!file ? (
         <>
           <div
             className={`
-              border-2 border-dashed rounded-xl p-8 text-center transition cursor-pointer 
+              border-2 border-dashed rounded-xl p-6 sm:p-8 text-center transition cursor-pointer
               ${
                 isDragging
                   ? "border-green-400 bg-green-400/10"
-                  : "border-gray-600"
+                  : "border-gray-600 hover:border-green-400/60"
               }
             `}
             onDrop={onDrop}
             onDragOver={onDragOver}
             onDragLeave={onDragLeave}
           >
-            <UploadCloud className="w-10 h-10 mx-auto text-green-400 mb-3" />
-            <p className="text-gray-300 mb-4">
+            <UploadCloud className="w-10 h-10 sm:w-12 sm:h-12 mx-auto text-green-400 mb-3" />
+            <p className="text-gray-300 mb-4 text-sm sm:text-base">
               Arraste o arquivo .zip ou .txt da sua conversa exportada aqui
             </p>
 
-            <label className="inline-block px-4 py-2 bg-green-500 text-black font-medium rounded-md cursor-pointer hover:bg-green-400 transition">
+            <label className="inline-block px-5 py-2.5 bg-green-500 text-black font-semibold rounded-md cursor-pointer hover:bg-green-400 active:scale-[0.98] transition text-sm sm:text-base">
               Selecionar arquivo
               <input
                 type="file"

@@ -4,7 +4,18 @@ import { GroupDatas } from "@/components/groupDatas";
 import { HeaderTopDatas } from "@/components/headerTopDatas";
 import { useDataAnalytics } from "@/lib/store/useDatasAnalytycs";
 import { CardDados } from "@/components/cardDados";
-import { MessageCircle, Smile, Image, Link, CalendarArrowUp, Clock, MessageSquareDiff } from "lucide-react";
+import {
+  MessageCircle,
+  Smile,
+  Image,
+  Link,
+  CalendarArrowUp,
+  Clock,
+  MessageSquareDiff,
+  LayoutGrid,
+  Activity,
+  Loader2,
+} from "lucide-react";
 import { GraficsGroup } from "@/components/graficsGroup";
 import { Table } from "./table";
 
@@ -14,8 +25,9 @@ export function DashboardPage() {
 
   if (!data) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <p className="text-foreground">Carregando...</p>
+      <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-background">
+        <Loader2 className="size-10 text-primary animate-spin" />
+        <p className="text-text-secondary">Carregando análise...</p>
       </div>
     );
   }
@@ -24,7 +36,7 @@ export function DashboardPage() {
     <div className="min-h-screen flex flex-col overflow-x-hidden bg-background">
       <HeaderTopDatas data={data.topDatas} title={titleMensagens} />
 
-      <GroupDatas title="Dados Gerais">
+      <GroupDatas title="Dados Gerais" icon={LayoutGrid}>
         <CardDados
           icon={MessageCircle}
           text="Total de Mensagens"
@@ -47,8 +59,7 @@ export function DashboardPage() {
         />
       </GroupDatas>
 
-
-      <GroupDatas title="Métricas Principais">
+      <GroupDatas title="Métricas Principais" icon={Activity}>
         <CardDados
           icon={MessageSquareDiff}
           text="Mensagens/dia"
