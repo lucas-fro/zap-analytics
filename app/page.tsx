@@ -18,8 +18,27 @@ import {
   LineChart,
   Lock,
   Sparkles,
+  Smartphone,
+  Apple,
+  ChevronRight,
 } from "lucide-react";
 import FileUploader from "../components/fileUploader";
+
+const tutorialAndroid = [
+  "Abra a conversa que você quer analisar.",
+  "Toque nos três pontinhos no canto superior direito → Mais → Exportar conversa.",
+  "Escolha Sem mídia (mais rápido).",
+  "Compartilhe o arquivo .zip pra você mesmo (Drive, e-mail, etc).",
+  "Volte aqui e arraste o arquivo no campo acima.",
+];
+
+const tutorialIos = [
+  "Abra a conversa que você quer analisar.",
+  "Toque no nome do contato/grupo no topo da tela.",
+  "Role até o final e toque em Exportar conversa.",
+  "Escolha Sem mídia (mais rápido).",
+  "Salve o arquivo e arraste aqui no campo acima.",
+];
 
 const steps = [
   {
@@ -167,6 +186,81 @@ export default function Home() {
                 </p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* TUTORIAL DE EXPORTAÇÃO */}
+      <section className="relative w-full py-16 md:py-24 px-5 md:px-10">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-10 md:mb-14">
+            <h2 className="text-foreground text-2xl sm:text-3xl md:text-5xl font-bold mb-3 md:mb-4">
+              Como <span className="text-primary">exportar</span> a conversa
+            </h2>
+            <p className="text-border text-base md:text-xl max-w-2xl mx-auto">
+              Não sabe como tirar a conversa do WhatsApp? Siga o passo a passo
+              do seu sistema.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-4 md:gap-6">
+            <div className="rounded-2xl border border-white/10 bg-background p-5 md:p-7">
+              <div className="flex items-center gap-3 mb-5">
+                <div className="bg-primary/15 text-primary size-10 md:size-11 rounded-xl flex items-center justify-center border border-primary/30">
+                  <Smartphone className="size-5" />
+                </div>
+                <h3 className="text-foreground font-bold text-lg md:text-xl">
+                  Android
+                </h3>
+              </div>
+              <ol className="flex flex-col gap-3">
+                {tutorialAndroid.map((passo, i) => (
+                  <li
+                    key={i}
+                    className="flex gap-3 text-border text-sm md:text-base leading-relaxed"
+                  >
+                    <span className="shrink-0 size-6 rounded-full bg-primary/15 text-primary border border-primary/30 flex items-center justify-center text-xs font-bold">
+                      {i + 1}
+                    </span>
+                    <span>{passo}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+
+            <div className="rounded-2xl border border-white/10 bg-background p-5 md:p-7">
+              <div className="flex items-center gap-3 mb-5">
+                <div className="bg-primary/15 text-primary size-10 md:size-11 rounded-xl flex items-center justify-center border border-primary/30">
+                  <Apple className="size-5" />
+                </div>
+                <h3 className="text-foreground font-bold text-lg md:text-xl">
+                  iPhone
+                </h3>
+              </div>
+              <ol className="flex flex-col gap-3">
+                {tutorialIos.map((passo, i) => (
+                  <li
+                    key={i}
+                    className="flex gap-3 text-border text-sm md:text-base leading-relaxed"
+                  >
+                    <span className="shrink-0 size-6 rounded-full bg-primary/15 text-primary border border-primary/30 flex items-center justify-center text-xs font-bold">
+                      {i + 1}
+                    </span>
+                    <span>{passo}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </div>
+
+          <div className="mt-8 md:mt-10 text-center">
+            <a
+              href="#top"
+              className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium text-sm md:text-base transition-colors"
+            >
+              Voltar e enviar arquivo
+              <ChevronRight className="size-4" />
+            </a>
           </div>
         </div>
       </section>

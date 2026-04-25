@@ -1,4 +1,4 @@
-import { Mensagem, MensagensPorDiaSemanaPorPessoa, MensagensPorHoraPorPessoa, MensagensPorPessoaPorMes, MenssagensPorMes } from "../types/types";
+import { Mensagem, MensagensPorDiaSemanaPorPessoa, MensagensPorHoraPorPessoa, MensagensPorPessoaPorMes, MensagensPorMes } from "../types/types";
 
 
 // Helper para converter DD/MM/YYYY → YYYY-MM para gráficos
@@ -22,7 +22,7 @@ function getWeekdayName(dateStr: string) {
 //   { month: "2024-02", total: 55 },
 // ]
 // -----------------------------------------------------------
-export function mensagensPorMes(mensagens: Mensagem[]) : MenssagensPorMes[] {
+export function mensagensPorMes(mensagens: Mensagem[]) : MensagensPorMes[] {
   const mapa: Record<string, number> = {};
 
   for (const msg of mensagens) {

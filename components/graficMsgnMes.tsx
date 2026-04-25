@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "./ui/chart";
 import { Area, CartesianGrid, XAxis, AreaChart, YAxis } from "recharts";
-import { MenssagensPorMes } from "@/lib/types/types";
+import { MensagensPorMes } from "@/lib/types/types";
 
 
 
@@ -13,7 +13,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export function GraficMsgnMes({ data, className }: { data: MenssagensPorMes[], className?: string }) {
+export function GraficMsgnMes({ data, className }: { data: MensagensPorMes[], className?: string }) {
 
     return (
         <div className={`${className}`}>

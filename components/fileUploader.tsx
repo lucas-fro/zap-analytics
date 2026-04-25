@@ -4,13 +4,25 @@ import React, { useState } from "react";
 import { UploadCloud, FileText, Archive } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { parseFile } from "../lib/parse";
-import { useDataAnalytics } from "../lib/store/useDatasAnalytycs";
-import { AnalyzeAllResult } from "@/lib/types/types";
+import { analyzeAll } from "../lib/analyzeAll";
+import { useDataAnalytics } from "../lib/store/useDataAnalytics";
+
+const STAGES = {
+  reading: "Lendo arquivo...",
+  extracting: "Extraindo mensagens...",
+  analyzing: "Analisando conversa...",
+} as const;
+
+type Stage = keyof typeof STAGES | null;
+
+// Yield to the browser pra repintar antes do próximo bloco síncrono pesado
+const yieldToUI = () => new Promise<void>((r) => setTimeout(r, 0));
 
 export default function FileUploader({ redirectTo }: { redirectTo: string }) {
   const [file, setFile] = useState<File | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [stage, setStage] = useState<Stage>(null);
   const [error, setError] = useState<string | null>(null);
 
   const setData = useDataAnalytics((state) => state.setData);
@@ -35,35 +47,39 @@ export default function FileUploader({ redirectTo }: { redirectTo: string }) {
     setError(null);
 
     try {
-      const analytics = await parseFile(f);
+      setStage("reading");
+      await yieldToUI();
+
+      setStage("extracting");
+      await yieldToUI();
+      const mensagens = await parseFile(f);
+
+      setStage("analyzing");
+      await yieldToUI();
+      const analytics = analyzeAll(mensagens);
+
       setData(analytics);
       setTitle(extractConversationName(f.name));
       router.push(redirectTo);
     } catch (err) {
-      console.error("Erro ao processar arquivo:", err);
       setError(
         err instanceof Error ? err.message : "Erro ao processar arquivo"
       );
       setLoading(false);
+      setStage(null);
       setFile(null);
     }
   };
 
   function extractConversationName(filename: string): string {
-    // Remove extensão (.txt)
     const noExtension = filename.replace(/\.[^/.]+$/, "");
-
-    // Pega tudo depois de "com "
     const match = noExtension.match(/com\s+(.*)$/i);
-
-    // Se achar, retorna o nome, senão retorna string vazia
     return match ? match[1].trim() : "";
   }
 
   const onDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDragging(false);
-
     const droppedFile = e.dataTransfer.files?.[0];
     handleFile(droppedFile || null);
   };
@@ -82,7 +98,6 @@ export default function FileUploader({ redirectTo }: { redirectTo: string }) {
 
   const getFileIcon = () => {
     if (!file) return null;
-
     if (file.name.endsWith(".txt"))
       return <FileText className="w-6 h-6 text-blue-400" />;
     if (file.name.endsWith(".zip"))
@@ -91,15 +106,15 @@ export default function FileUploader({ redirectTo }: { redirectTo: string }) {
 
   const formatFileSize = (bytes: number, decimals = 2): string => {
     if (bytes === 0) return "0 Bytes";
-
     const k = 1024;
     const dm = decimals < 0 ? 0 : decimals;
     const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
   };
+
+  const stageOrder: Stage[] = ["reading", "extracting", "analyzing"];
+  const currentStageIndex = stage ? stageOrder.indexOf(stage) : -1;
 
   return (
     <div className="max-w-xl w-full mx-auto border border-white/10 rounded-2xl p-4 sm:p-6 bg-[#1f1f23] text-[#fafafa] shadow-xl shadow-black/30">
@@ -141,16 +156,30 @@ export default function FileUploader({ redirectTo }: { redirectTo: string }) {
           )}
         </>
       ) : (
-        <div className="flex flex-col items-center gap-3 py-4">
+        <div className="flex flex-col items-center gap-4 py-4">
           {getFileIcon()}
-          <p className="font-medium text-center">{file.name}</p>
+          <p className="font-medium text-center break-all px-2">{file.name}</p>
           {file.size > 0 && (
             <p className="text-sm text-gray-400">{formatFileSize(file.size)}</p>
           )}
-          {loading && (
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-4 border-2 border-green-400 border-t-transparent rounded-full animate-spin"></div>
-              <p className="text-sm text-gray-400">Processando arquivo...</p>
+
+          {loading && stage && (
+            <div className="flex flex-col items-center gap-3 w-full max-w-xs">
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 border-2 border-green-400 border-t-transparent rounded-full animate-spin" />
+                <p className="text-sm text-gray-300">{STAGES[stage]}</p>
+              </div>
+
+              <div className="flex items-center gap-1.5 w-full">
+                {stageOrder.map((s, i) => (
+                  <div
+                    key={s}
+                    className={`h-1 flex-1 rounded-full transition-colors ${
+                      i <= currentStageIndex ? "bg-green-400" : "bg-gray-700"
+                    }`}
+                  />
+                ))}
+              </div>
             </div>
           )}
         </div>

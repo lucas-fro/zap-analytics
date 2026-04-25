@@ -1,17 +1,13 @@
 import { ArrowLeft, Calendar, MessageSquare, Users } from "lucide-react";
 import Link from "next/link";
+import { ResumoConversa } from "@/lib/types/types";
 
-type HeaderTopDatasProps = {
-  data: {
-    dataInicial: string | null;
-    dataFinal: string | null;
-    diasTotais: number;
-    quantidadeDeMembros: number;
-  };
+type HeaderResumoProps = {
+  data: ResumoConversa;
   title: string | null;
 };
 
-export function HeaderTopDatas({ data, title }: HeaderTopDatasProps) {
+export function HeaderResumo({ data, title }: HeaderResumoProps) {
   return (
     <header className="relative overflow-hidden bg-linear-to-br from-primary/15 via-background to-background border-b border-white/10 px-5 md:px-10 py-8 md:py-14">
       <div className="absolute -top-20 -right-20 w-60 h-60 md:w-80 md:h-80 bg-primary/20 rounded-full blur-3xl pointer-events-none" />

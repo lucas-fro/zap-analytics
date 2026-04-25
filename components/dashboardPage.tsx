@@ -1,8 +1,10 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { GroupDatas } from "@/components/groupDatas";
-import { HeaderTopDatas } from "@/components/headerTopDatas";
-import { useDataAnalytics } from "@/lib/store/useDatasAnalytycs";
+import { HeaderResumo } from "@/components/headerResumo";
+import { useDataAnalytics } from "@/lib/store/useDataAnalytics";
 import { CardDados } from "@/components/cardDados";
 import {
   MessageCircle,
@@ -16,14 +18,30 @@ import {
   Activity,
   Loader2,
 } from "lucide-react";
-import { GraficsGroup } from "@/components/graficsGroup";
+import { GraficosGroup } from "@/components/graficosGroup";
 import { Table } from "./table";
 
 export function DashboardPage() {
+  const router = useRouter();
   const data = useDataAnalytics((state) => state.data);
   const titleMensagens = useDataAnalytics((state) => state.titleMensagens);
+  const [hydrated, setHydrated] = useState(false);
 
-  if (!data) {
+  useEffect(() => {
+    if (useDataAnalytics.persist.hasHydrated()) {
+      setHydrated(true);
+    }
+    const unsub = useDataAnalytics.persist.onFinishHydration(() => setHydrated(true));
+    return unsub;
+  }, []);
+
+  useEffect(() => {
+    if (hydrated && !data) {
+      router.replace("/");
+    }
+  }, [hydrated, data, router]);
+
+  if (!hydrated || !data) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-background">
         <Loader2 className="size-10 text-primary animate-spin" />
@@ -34,7 +52,7 @@ export function DashboardPage() {
 
   return (
     <div className="min-h-screen flex flex-col overflow-x-hidden bg-background">
-      <HeaderTopDatas data={data.topDatas} title={titleMensagens} />
+      <HeaderResumo data={data.resumo} title={titleMensagens} />
 
       <GroupDatas title="Dados Gerais" icon={LayoutGrid}>
         <CardDados
@@ -79,7 +97,7 @@ export function DashboardPage() {
 
       <Table data={data.dataPerPerson} />
 
-      <GraficsGroup data={data} />
+      <GraficosGroup data={data} />
     </div>
   );
 }

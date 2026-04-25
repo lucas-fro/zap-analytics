@@ -5,12 +5,12 @@ export type Mensagem = {
   mensagem: string;
 };
 
-export type TopDatas = {
+export type ResumoConversa = {
   dataInicial: string | null;
   dataFinal: string | null;
   diasTotais: number;
   quantidadeDeMembros: number;
-}
+};
 
 export type RankingEmojis = {
   emoji: string;
@@ -30,11 +30,10 @@ export type EstatisticasPorParticipante = {
   totalMidias: number;
 };
 
-export type MenssagensPorMes = {
-  month: string; // "MM/YYYY"
+export type MensagensPorMes = {
+  month: string; // "YYYY-MM"
   total: number;
 };
-
 
 export type MensagensPorHoraPorPessoa = {
   hour: string;
@@ -51,37 +50,35 @@ export type MensagensPorPessoaPorMes = {
   [pessoa: string]: number | string;
 };
 
-
 export type AnalyzeAllResult = {
-    topDatas: TopDatas;
-    rawDatas: {
-        countMensagens: string;
-        countMidias: string;
-        countEmojis: string;
-        countLinks: string;
-    };
-    metrics: {
-        mediaMensagensPorDia: number;
-        horaMaisAtiva: string | null;
-        diaMaisAtivo: string | null;
-    };
-    dataPerPerson: EstatisticasPorParticipante[];
-    ranking: {
-        topEmojis: RankingEmojis[];
-        topPalavras: RankingPalavras[];
-    };
-    grafics: {
-        mensagensPorMes: MenssagensPorMes[];
-        mensagensPorHoraPorPessoa: MensagensPorHoraPorPessoa[];
-        mensagensPorDiaSemanaPorPessoa: MensagensPorDiaSemanaPorPessoa[];
-        mensagensPorPessoaPorMes: MensagensPorPessoaPorMes[];
-    };
-}
-
-
-export type GraficData = {
-    mensagensPorMes: MenssagensPorMes[];
+  resumo: ResumoConversa;
+  rawDatas: {
+    countMensagens: string;
+    countMidias: string;
+    countEmojis: string;
+    countLinks: string;
+  };
+  metrics: {
+    mediaMensagensPorDia: number;
+    horaMaisAtiva: string | null;
+    diaMaisAtivo: string | null;
+  };
+  dataPerPerson: EstatisticasPorParticipante[];
+  ranking: {
+    topEmojis: RankingEmojis[];
+    topPalavras: RankingPalavras[];
+  };
+  graficos: {
+    mensagensPorMes: MensagensPorMes[];
     mensagensPorHoraPorPessoa: MensagensPorHoraPorPessoa[];
     mensagensPorDiaSemanaPorPessoa: MensagensPorDiaSemanaPorPessoa[];
     mensagensPorPessoaPorMes: MensagensPorPessoaPorMes[];
-}
+  };
+};
+
+export type GraficData = {
+  mensagensPorMes: MensagensPorMes[];
+  mensagensPorHoraPorPessoa: MensagensPorHoraPorPessoa[];
+  mensagensPorDiaSemanaPorPessoa: MensagensPorDiaSemanaPorPessoa[];
+  mensagensPorPessoaPorMes: MensagensPorPessoaPorMes[];
+};

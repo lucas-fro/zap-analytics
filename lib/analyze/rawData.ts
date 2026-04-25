@@ -1,23 +1,16 @@
 import { Mensagem } from "../types/types";
+import { EMOJI_REGEX } from "../utils/emoji";
 
-// Utilitário de formatação
 export function formatNumber(n: number): string {
   return n.toLocaleString("pt-BR");
 }
 
-// ------------------------------
-// 1) Total de mensagens
-// ------------------------------
-export function totalMensagens(mensagens: Mensagem[]) : string {
+export function totalMensagens(mensagens: Mensagem[]): string {
   return formatNumber(mensagens.length);
 }
 
-// ------------------------------
-// 2) Total de mídias
-// ------------------------------
-export function totalMidias(mensagens: Mensagem[]) : string {
+export function totalMidias(mensagens: Mensagem[]): string {
   let count = 0;
-
   const regex = /<\s*m[ií]dia oculta\s*>/gi;
 
   for (const msg of mensagens) {
@@ -28,26 +21,18 @@ export function totalMidias(mensagens: Mensagem[]) : string {
   return formatNumber(count);
 }
 
-// ------------------------------
-// 3) Total de emojis
-// ------------------------------
-export function totalEmojis(mensagens: Mensagem[]) : string {
+export function totalEmojis(mensagens: Mensagem[]): string {
   let count = 0;
 
-  const emojiRegex = /\p{Emoji_Presentation}/gu;
-
   for (const msg of mensagens) {
-    const matches = msg.mensagem.match(emojiRegex);
+    const matches = msg.mensagem.match(EMOJI_REGEX);
     if (matches) count += matches.length;
   }
 
   return formatNumber(count);
 }
 
-// ------------------------------
-// 4) Total de links
-// ------------------------------
-export function totalLinks(mensagens: Mensagem[]) : string {
+export function totalLinks(mensagens: Mensagem[]): string {
   let count = 0;
   const linkRegex = /https?:\/\/\S+/gi;
 

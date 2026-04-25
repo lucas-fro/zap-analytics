@@ -1,13 +1,13 @@
 import { Mensagem, RankingEmojis, RankingPalavras } from "../types/types";
+import { EMOJI_REGEX } from "../utils/emoji";
 // -----------------------------------------------------
 // 1) Lista de contagem de TODOS os emojis usados
 // -----------------------------------------------------
 export function getEmojiCountList(mensagens: Mensagem[]) : RankingEmojis[] {
-  const emojiRegex = /\p{Emoji_Presentation}/gu;
   const mapa: Record<string, number> = {};
 
   for (const msg of mensagens) {
-    const encontrados = msg.mensagem.match(emojiRegex);
+    const encontrados = msg.mensagem.match(EMOJI_REGEX);
     if (!encontrados) continue;
 
     for (const emoji of encontrados) {
@@ -46,7 +46,7 @@ export function getTop10Palavras(mensagens: Mensagem[]) : RankingPalavras[] {
 
   for (const msg of mensagens) {
     // remove emojis para não virar "palavras"
-    const textoLimpo = msg.mensagem.replace(/\p{Emoji_Presentation}/gu, "");
+    const textoLimpo = msg.mensagem.replace(EMOJI_REGEX, "");
 
     // Remove símbolos e deixa só letras/números/espaços
     const palavras = textoLimpo
