@@ -495,25 +495,6 @@ Adicione mais nomes na lista pra excluí-los das análises.
 
 ---
 
-## Roadmap
-
-Ideias pra evoluções futuras (não está implementado):
-
-- [ ] Suporte a exportações com mídia (counting `(arquivo anexado)` e `<anexado:>`)
-- [ ] Web Worker pra parse + análise (não trava UI)
-- [ ] IndexedDB em vez de localStorage (suporta arquivos maiores)
-- [ ] Suporte a outros idiomas (ES, FR, etc.)
-- [ ] Detecção de formato de data por locale (DD/MM vs MM/DD)
-- [ ] Filtro por pessoa nos gráficos
-- [ ] Filtro por intervalo de datas
-- [ ] Exportação do dashboard como PDF/PNG
-- [ ] Dark/light mode toggle (hoje só dark)
-- [ ] Word cloud
-- [ ] Heatmap (hora × dia da semana)
-- [ ] Testes do parser com fixtures de diferentes formatos
-
----
-
 ## Decisões de design
 
 **Por que processamento client-side?**
@@ -576,7 +557,7 @@ Pra uma conversa exportada de iOS PT-BR com 12.183 mensagens entre 2 pessoas:
   },
   "dataPerPerson": [
     {
-      "nome": "Gustavo Guedes",
+      "nome": "Fulano",
       "totalMensagens": 7723,
       "totalPalavras": 21936,
       "totalEmojis": 54,
