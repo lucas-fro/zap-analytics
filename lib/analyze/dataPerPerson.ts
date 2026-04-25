@@ -1,12 +1,22 @@
-import { EstatisticasPorParticipante, Mensagem } from "../types/types";
+import {
+  EstatisticasPorParticipante,
+  Mensagem,
+  Platform,
+} from "../types/types";
 import { EMOJI_REGEX } from "../utils/emoji";
+import {
+  contarMidiasPorTipo,
+  contarTotalMidias,
+  criarMidiaCountsZerado,
+  removerMarcadoresDeMidia,
+} from "../utils/midia";
 
-const MIDIA_REGEX = /<\s*m[ií]dia oculta\s*>/gi;
-const MENSAGEM_APAGADA_REGEX = /mensagem apagada/gi;
-const MENSAGEM_EDITADA_REGEX = /<\s*mensagem editada\s*>/gi;
+const MENSAGEM_APAGADA_REGEX = /esta mensagem foi apagada\.?|você apagou esta mensagem\.?|mensagem apagada/gi;
+const MENSAGEM_EDITADA_REGEX = /<\s*mensagem editada\s*>|<\s*esta mensagem foi editada\s*>/gi;
 
 export function estatisticasPorParticipante(
-  mensagens: Mensagem[]
+  mensagens: Mensagem[],
+  platform: Platform
 ): EstatisticasPorParticipante[] {
   const mapa = new Map<string, EstatisticasPorParticipante>();
 
@@ -19,6 +29,7 @@ export function estatisticasPorParticipante(
         totalEmojis: 0,
         totalMidias: 0,
         totalPalavras: 0,
+        ...(platform === "ios" ? { midiasPorTipo: criarMidiaCountsZerado() } : {}),
       };
       mapa.set(msg.nome, participante);
     }
@@ -28,11 +39,19 @@ export function estatisticasPorParticipante(
     const emojis = msg.mensagem.match(EMOJI_REGEX);
     if (emojis) participante.totalEmojis += emojis.length;
 
-    const midias = msg.mensagem.match(MIDIA_REGEX);
-    if (midias) participante.totalMidias += midias.length;
+    participante.totalMidias += contarTotalMidias(msg.mensagem, platform);
 
-    const textoLimpo = msg.mensagem
-      .replace(MIDIA_REGEX, "")
+    if (platform === "ios" && participante.midiasPorTipo) {
+      const counts = contarMidiasPorTipo(msg.mensagem);
+      participante.midiasPorTipo.imagem += counts.imagem;
+      participante.midiasPorTipo.video += counts.video;
+      participante.midiasPorTipo.audio += counts.audio;
+      participante.midiasPorTipo.figurinha += counts.figurinha;
+      participante.midiasPorTipo.gif += counts.gif;
+      participante.midiasPorTipo.documento += counts.documento;
+    }
+
+    const textoLimpo = removerMarcadoresDeMidia(msg.mensagem)
       .replace(MENSAGEM_APAGADA_REGEX, "")
       .replace(MENSAGEM_EDITADA_REGEX, "")
       .replace(EMOJI_REGEX, "")

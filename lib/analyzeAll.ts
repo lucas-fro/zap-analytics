@@ -2,6 +2,7 @@ import { resumoConversa } from "./analyze/resumo";
 import {
   totalMensagens,
   totalMidias,
+  totalMidiasPorTipo,
   totalEmojis,
   totalLinks,
 } from "./analyze/rawData";
@@ -12,7 +13,7 @@ import {
 } from "./analyze/metrics";
 import { estatisticasPorParticipante } from "./analyze/dataPerPerson";
 import { getEmojiCountList, getTop10Palavras } from "./analyze/ranking";
-import { AnalyzeAllResult, Mensagem } from "./types/types";
+import { AnalyzeAllResult, Mensagem, Platform } from "./types/types";
 import {
   mensagensPorDiaSemanaPorPessoa,
   mensagensPorHoraPorPessoa,
@@ -20,21 +21,30 @@ import {
   mensagensPorPessoaPorMes,
 } from "./analyze/graficos";
 
-export function analyzeAll(mensagens: Mensagem[]): AnalyzeAllResult {
+export function analyzeAll(input: {
+  platform: Platform;
+  mensagens: Mensagem[];
+}): AnalyzeAllResult {
+  const { platform, mensagens } = input;
+
   return {
+    platform,
     resumo: resumoConversa(mensagens),
     rawDatas: {
       countMensagens: totalMensagens(mensagens),
-      countMidias: totalMidias(mensagens),
+      countMidias: totalMidias(mensagens, platform),
       countEmojis: totalEmojis(mensagens),
       countLinks: totalLinks(mensagens),
+      ...(platform === "ios"
+        ? { midiasPorTipo: totalMidiasPorTipo(mensagens) }
+        : {}),
     },
     metrics: {
       mediaMensagensPorDia: mediaMensagensPorDia(mensagens),
       horaMaisAtiva: horaMaisAtiva(mensagens),
       diaMaisAtivo: diaMaisAtivo(mensagens),
     },
-    dataPerPerson: estatisticasPorParticipante(mensagens),
+    dataPerPerson: estatisticasPorParticipante(mensagens, platform),
     ranking: {
       topEmojis: getEmojiCountList(mensagens),
       topPalavras: getTop10Palavras(mensagens),

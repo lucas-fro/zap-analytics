@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import { useState, useMemo } from "react"
-import { Trophy } from "lucide-react"
+import { useMemo, useState } from "react";
+import { Trophy } from "lucide-react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {
   TableUI,
@@ -10,7 +10,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table";
 
 import {
   Select,
@@ -20,20 +20,35 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 
 import { Card } from "./ui/card";
 import { cn } from "@/lib/utils";
-import { EstatisticasPorParticipante } from "@/lib/types/types";
+import {
+  EstatisticasPorParticipante,
+  Platform,
+} from "@/lib/types/types";
 
-type FilterKey = "Mensagens" | "Palavras" | "Emojis" | "Mídias";
-
-const filterMap: Record<FilterKey, keyof EstatisticasPorParticipante> = {
-  Mensagens: "totalMensagens",
-  Palavras: "totalPalavras",
-  Emojis: "totalEmojis",
-  Mídias: "totalMidias",
+type Coluna = {
+  key: string;
+  accessor: (p: EstatisticasPorParticipante) => number;
 };
+
+const COLUNAS_BASE: Coluna[] = [
+  { key: "Mensagens", accessor: (p) => p.totalMensagens },
+  { key: "Palavras", accessor: (p) => p.totalPalavras },
+  { key: "Emojis", accessor: (p) => p.totalEmojis },
+  { key: "Mídias", accessor: (p) => p.totalMidias },
+];
+
+const COLUNAS_IOS_EXTRA: Coluna[] = [
+  { key: "Imagem", accessor: (p) => p.midiasPorTipo?.imagem ?? 0 },
+  { key: "Vídeo", accessor: (p) => p.midiasPorTipo?.video ?? 0 },
+  { key: "Áudio", accessor: (p) => p.midiasPorTipo?.audio ?? 0 },
+  { key: "Figurinha", accessor: (p) => p.midiasPorTipo?.figurinha ?? 0 },
+  { key: "GIF", accessor: (p) => p.midiasPorTipo?.gif ?? 0 },
+  { key: "Documento", accessor: (p) => p.midiasPorTipo?.documento ?? 0 },
+];
 
 function getInitials(name: string) {
   const parts = name.trim().split(/\s+/);
@@ -49,15 +64,32 @@ function hashHue(str: string) {
   return h % 360;
 }
 
-export function Table({ data }: { data: EstatisticasPorParticipante[] }) {
-  const [filter, setFilter] = useState<FilterKey>("Mensagens");
+type TableProps = {
+  data: EstatisticasPorParticipante[];
+  platform: Platform;
+};
+
+export function Table({ data, platform }: TableProps) {
+  const colunas = useMemo<Coluna[]>(
+    () =>
+      platform === "ios"
+        ? [...COLUNAS_BASE, ...COLUNAS_IOS_EXTRA]
+        : COLUNAS_BASE,
+    [platform]
+  );
+
+  const [filter, setFilter] = useState<string>(colunas[0].key);
+
+  const colunaAtiva = useMemo(
+    () => colunas.find((c) => c.key === filter) ?? colunas[0],
+    [colunas, filter]
+  );
 
   const sorted = useMemo(() => {
-    const key = filterMap[filter];
-    return [...data].sort((a, b) => (b[key] as number) - (a[key] as number));
-  }, [filter, data]);
-
-  const activeKey = filterMap[filter];
+    return [...data].sort(
+      (a, b) => colunaAtiva.accessor(b) - colunaAtiva.accessor(a)
+    );
+  }, [colunaAtiva, data]);
 
   return (
     <section className="flex flex-col gap-4 md:gap-5 mt-6 md:mt-10 px-5 md:px-10 w-full max-w-6xl mx-auto">
@@ -73,19 +105,21 @@ export function Table({ data }: { data: EstatisticasPorParticipante[] }) {
       <Card className="p-0 md:p-0 overflow-hidden">
         <div className="flex justify-between items-center px-4 md:px-5 py-3 border-b border-white/10">
           <p className="text-text-secondary text-sm hidden sm:block">
-            Ordenado por <span className="text-primary font-medium">{filter}</span>
+            Ordenado por{" "}
+            <span className="text-primary font-medium">{filter}</span>
           </p>
-          <Select onValueChange={(v) => setFilter(v as FilterKey)} defaultValue="Mensagens">
+          <Select onValueChange={(v) => setFilter(v)} value={filter}>
             <SelectTrigger className="w-40 sm:w-[180px]">
               <SelectValue placeholder="Filtrar por" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
                 <SelectLabel>Filtro</SelectLabel>
-                <SelectItem value="Mensagens">Mensagens</SelectItem>
-                <SelectItem value="Palavras">Palavras</SelectItem>
-                <SelectItem value="Emojis">Emojis</SelectItem>
-                <SelectItem value="Mídias">Mídias</SelectItem>
+                {colunas.map((c) => (
+                  <SelectItem key={c.key} value={c.key}>
+                    {c.key}
+                  </SelectItem>
+                ))}
               </SelectGroup>
             </SelectContent>
           </Select>
@@ -98,17 +132,17 @@ export function Table({ data }: { data: EstatisticasPorParticipante[] }) {
                 <TableHead className="text-center w-12">#</TableHead>
                 <TableHead>Nome</TableHead>
 
-                {(Object.keys(filterMap) as FilterKey[]).map((col) => (
+                {colunas.map((c) => (
                   <TableHead
-                    key={col}
+                    key={c.key}
                     className={cn(
-                      "transition-colors",
-                      filter === col
+                      "transition-colors whitespace-nowrap",
+                      filter === c.key
                         ? "font-bold text-primary"
                         : "text-muted-foreground"
                     )}
                   >
-                    {col}
+                    {c.key}
                   </TableHead>
                 ))}
               </TableRow>
@@ -125,9 +159,11 @@ export function Table({ data }: { data: EstatisticasPorParticipante[] }) {
                     className="border-b-border hover:bg-primary/5 transition-colors"
                   >
                     <TableCell className="text-center font-medium">
-                      {index < 3
-                        ? ["🥇", "🥈", "🥉"][index]
-                        : <span className="text-text-secondary">{index + 1}°</span>}
+                      {index < 3 ? (
+                        ["🥇", "🥈", "🥉"][index]
+                      ) : (
+                        <span className="text-text-secondary">{index + 1}°</span>
+                      )}
                     </TableCell>
 
                     <TableCell>
@@ -148,22 +184,19 @@ export function Table({ data }: { data: EstatisticasPorParticipante[] }) {
                       </div>
                     </TableCell>
 
-                    {(Object.keys(filterMap) as FilterKey[]).map((col) => {
-                      const k = filterMap[col];
-                      return (
-                        <TableCell
-                          key={col}
-                          className={cn(
-                            "transition-colors",
-                            activeKey === k
-                              ? "font-bold text-foreground"
-                              : "text-muted-foreground"
-                          )}
-                        >
-                          {(person[k] as number).toLocaleString("pt-BR")}
-                        </TableCell>
-                      );
-                    })}
+                    {colunas.map((c) => (
+                      <TableCell
+                        key={c.key}
+                        className={cn(
+                          "transition-colors",
+                          filter === c.key
+                            ? "font-bold text-foreground"
+                            : "text-muted-foreground"
+                        )}
+                      >
+                        {c.accessor(person).toLocaleString("pt-BR")}
+                      </TableCell>
+                    ))}
                   </TableRow>
                 );
               })}

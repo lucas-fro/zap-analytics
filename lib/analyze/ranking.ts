@@ -1,5 +1,9 @@
 import { Mensagem, RankingEmojis, RankingPalavras } from "../types/types";
 import { EMOJI_REGEX } from "../utils/emoji";
+import { removerMarcadoresDeMidia } from "../utils/midia";
+
+const MENSAGEM_APAGADA_REGEX = /esta mensagem foi apagada\.?|você apagou esta mensagem\.?|mensagem apagada/gi;
+const MENSAGEM_EDITADA_REGEX = /<\s*mensagem editada\s*>|<\s*esta mensagem foi editada\s*>/gi;
 // -----------------------------------------------------
 // 1) Lista de contagem de TODOS os emojis usados
 // -----------------------------------------------------
@@ -39,14 +43,25 @@ export function getTop10Palavras(mensagens: Mensagem[]) : RankingPalavras[] {
     "tua","seu","sua","já","mas","pra","pro","tá","to","tô",
     "um","uma","uns","umas","depois","quando","onde","como",
     "vcs","vc","pq","ta","só","me", "mídia", "oculta", "https",
-    "mensagem", "foi", "não", "nao", "sim", "tem", "mais", "muito"
+    "mensagem", "foi", "não", "nao", "sim", "tem", "mais", "muito",
+    // Vocabulário de notificação de chamada/mídia (iOS injeta como
+    // mensagens com `:` no corpo, ex: "Chamada de voz: 5 minutos")
+    "ligação","ligacao","chamada","chamadas","perdida","perdidas",
+    "voz","vídeo","video","áudio","audio","imagem","figurinha","gif","gifs","documento",
+    "ocultada","ocultado","omitida","omitido",
+    "segundo","segundos","minuto","minutos","hora","horas",
   ]);
 
   const palavraCount: Record<string, number> = {};
 
   for (const msg of mensagens) {
-    // remove emojis para não virar "palavras"
-    const textoLimpo = msg.mensagem.replace(EMOJI_REGEX, "");
+    // Remove marcadores de mídia, mensagens apagadas/editadas e emojis
+    // antes de tokenizar — senão "imagem ocultada" virava ["imagem","ocultada"]
+    // e poluía o ranking.
+    const textoLimpo = removerMarcadoresDeMidia(msg.mensagem)
+      .replace(MENSAGEM_APAGADA_REGEX, "")
+      .replace(MENSAGEM_EDITADA_REGEX, "")
+      .replace(EMOJI_REGEX, "");
 
     // Remove símbolos e deixa só letras/números/espaços
     const palavras = textoLimpo

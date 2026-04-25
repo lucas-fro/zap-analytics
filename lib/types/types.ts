@@ -1,3 +1,7 @@
+import type { MidiaCounts, MidiaTipo, Platform } from "../utils/midia";
+
+export type { MidiaCounts, MidiaTipo, Platform };
+
 export type Mensagem = {
   data: string;
   hora: string;
@@ -28,6 +32,7 @@ export type EstatisticasPorParticipante = {
   totalEmojis: number;
   totalPalavras: number;
   totalMidias: number;
+  midiasPorTipo?: MidiaCounts;
 };
 
 export type MensagensPorMes = {
@@ -51,12 +56,14 @@ export type MensagensPorPessoaPorMes = {
 };
 
 export type AnalyzeAllResult = {
+  platform: Platform;
   resumo: ResumoConversa;
   rawDatas: {
     countMensagens: string;
     countMidias: string;
     countEmojis: string;
     countLinks: string;
+    midiasPorTipo?: Record<MidiaTipo, string>;
   };
   metrics: {
     mediaMensagensPorDia: number;

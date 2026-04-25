@@ -17,6 +17,12 @@ import {
   LayoutGrid,
   Activity,
   Loader2,
+  Video,
+  Mic,
+  Sticker,
+  Film,
+  FileText,
+  Images,
 } from "lucide-react";
 import { GraficosGroup } from "@/components/graficosGroup";
 import { Table } from "./table";
@@ -95,7 +101,42 @@ export function DashboardPage() {
         />
       </GroupDatas>
 
-      <Table data={data.dataPerPerson} />
+      {data.platform === "ios" && data.rawDatas.midiasPorTipo && (
+        <GroupDatas title="Tipos de Mídia" icon={Images}>
+          <CardDados
+            icon={Image}
+            text="Imagens"
+            data={data.rawDatas.midiasPorTipo.imagem}
+          />
+          <CardDados
+            icon={Video}
+            text="Vídeos"
+            data={data.rawDatas.midiasPorTipo.video}
+          />
+          <CardDados
+            icon={Mic}
+            text="Áudios"
+            data={data.rawDatas.midiasPorTipo.audio}
+          />
+          <CardDados
+            icon={Sticker}
+            text="Figurinhas"
+            data={data.rawDatas.midiasPorTipo.figurinha}
+          />
+          <CardDados
+            icon={Film}
+            text="GIFs"
+            data={data.rawDatas.midiasPorTipo.gif}
+          />
+          <CardDados
+            icon={FileText}
+            text="Documentos"
+            data={data.rawDatas.midiasPorTipo.documento}
+          />
+        </GroupDatas>
+      )}
+
+      <Table data={data.dataPerPerson} platform={data.platform} />
 
       <GraficosGroup data={data} />
     </div>

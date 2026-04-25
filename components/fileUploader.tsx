@@ -52,11 +52,11 @@ export default function FileUploader({ redirectTo }: { redirectTo: string }) {
 
       setStage("extracting");
       await yieldToUI();
-      const mensagens = await parseFile(f);
+      const { platform, mensagens } = await parseFile(f);
 
       setStage("analyzing");
       await yieldToUI();
-      const analytics = analyzeAll(mensagens);
+      const analytics = analyzeAll({ platform, mensagens });
 
       setData(analytics);
       setTitle(extractConversationName(f.name));

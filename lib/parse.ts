@@ -1,8 +1,10 @@
 import JSZip from "jszip";
 import { extractMessages } from "./extractMessages";
-import { Mensagem } from "./types/types";
+import { Mensagem, Platform } from "./types/types";
 
-export async function parseFile(file: File): Promise<Mensagem[]> {
+export type ParseFileResult = { platform: Platform; mensagens: Mensagem[] };
+
+export async function parseFile(file: File): Promise<ParseFileResult> {
   if (file.name.toLowerCase().endsWith(".zip")) {
     try {
       const zip = await JSZip.loadAsync(file);
