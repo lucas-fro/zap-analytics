@@ -16,6 +16,11 @@ export type ResumoConversa = {
   quantidadeDeMembros: number;
 };
 
+export type Periodo = {
+  key: string; // "todas" | "ano-YYYY"
+  label: string;
+};
+
 export type RankingEmojis = {
   emoji: string;
   quantidade: number;

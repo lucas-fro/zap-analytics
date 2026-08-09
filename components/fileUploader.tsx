@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { UploadCloud, FileText, Archive } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { parseFile } from "../lib/parse";
-import { analyzeAll } from "../lib/analyzeAll";
+import { analyzeAllPeriodos } from "../lib/analyzeAll";
 import { useDataAnalytics } from "../lib/store/useDataAnalytics";
 
 const STAGES = {
@@ -25,7 +25,7 @@ export default function FileUploader({ redirectTo }: { redirectTo: string }) {
   const [stage, setStage] = useState<Stage>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const setData = useDataAnalytics((state) => state.setData);
+  const setAnalises = useDataAnalytics((state) => state.setAnalises);
   const setTitle = useDataAnalytics((state) => state.setTitleMensagens);
   const router = useRouter();
 
@@ -56,9 +56,9 @@ export default function FileUploader({ redirectTo }: { redirectTo: string }) {
 
       setStage("analyzing");
       await yieldToUI();
-      const analytics = analyzeAll({ platform, mensagens });
+      const analytics = analyzeAllPeriodos({ platform, mensagens });
 
-      setData(analytics);
+      setAnalises(analytics);
       setTitle(extractConversationName(f.name));
       router.push(redirectTo);
     } catch (err) {

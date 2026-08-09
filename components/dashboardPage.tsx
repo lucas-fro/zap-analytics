@@ -25,13 +25,22 @@ import {
   Images,
 } from "lucide-react";
 import { GraficosGroup } from "@/components/graficosGroup";
+import { FiltroPeriodo } from "@/components/filtroPeriodo";
+import { PERIODO_TODAS } from "@/lib/analyze/periodos";
 import { Table } from "./table";
 
 export function DashboardPage() {
   const router = useRouter();
-  const data = useDataAnalytics((state) => state.data);
+  const periodos = useDataAnalytics((state) => state.periodos);
+  const analises = useDataAnalytics((state) => state.analises);
+  const periodoAtivo = useDataAnalytics((state) => state.periodoAtivo);
+  const setPeriodoAtivo = useDataAnalytics((state) => state.setPeriodoAtivo);
   const titleMensagens = useDataAnalytics((state) => state.titleMensagens);
   const [hydrated, setHydrated] = useState(false);
+
+  // Período salvo pode não existir na análise atual — cai pra "todas".
+  const periodoValido = analises[periodoAtivo] ? periodoAtivo : PERIODO_TODAS;
+  const data = analises[periodoValido] ?? null;
 
   useEffect(() => {
     if (useDataAnalytics.persist.hasHydrated()) {
@@ -59,6 +68,12 @@ export function DashboardPage() {
   return (
     <div className="min-h-screen flex flex-col overflow-x-hidden bg-background">
       <HeaderResumo data={data.resumo} title={titleMensagens} />
+
+      <FiltroPeriodo
+        periodos={periodos}
+        value={periodoValido}
+        onChange={setPeriodoAtivo}
+      />
 
       <GroupDatas title="Dados Gerais" icon={LayoutGrid}>
         <CardDados
